@@ -1,0 +1,114 @@
+<?php
+$this->title = 'Number of request since 15 mn';
+$this->headTitle($this->title);
+?>
+<p>
+<table>
+<?php 
+      foreach($this->items as $item) {
+          $scriptItem=$this->escape($item->script_name);
+          $nbItem=$this->escape($item->req_per_sec);
+          $grtabdata[] = [$scriptItem,(int)($nbItem*1000)];
+          $abscis[]=$scriptItem;
+      }     
+      echo $abscis[0];
+      echo nl2br("\n\n");
+      echo $abscis[1];
+      $prepdata=json_encode($grtabdata);
+?>
+</table>
+<script>
+$(function () {
+  $(document).ready(function () {
+     $('#container').highcharts({
+        chart: {
+            type: 'spline',
+            events: {
+                load: function () {
+                      var series = this.series[0];
+                      var series1 = this.series[1];
+                          setInterval(function () {
+                                var x = (new Date()).getTime();
+                                $.get('index/figure',
+                                        function (r) {
+                                              series.addPoint([x, parseInt(r)], true, false,false);
+                                        });
+                                $.get('index/figure2',
+                                        function (b) {
+                                           series1.addPoint([x, parseInt(b)], true, false,false);
+                                        });
+                      }, 5000);
+                 }
+            }
+        },
+        title: {
+            text: 'Live random data'
+        },
+        xAxis: {
+              type: 'datetime'
+        },
+        yAxis: {
+                   /* minPadding: 0.2,
+            maxPadding: 0.2,
+            title: {
+                text: 'Value',
+                margin: 80
+            }*/
+        },
+        series: [{
+                name: 'login',
+                data: 
+                (function () {
+                        var data = [];
+                         data.push({
+                          x: (new Date()).getTime()-5000,
+                          y: 0
+                        });
+                        data.push({
+                          x: (new Date()).getTime(),
+                          y: 0
+                        });
+                        return data;
+                }())
+            },
+            {
+                name: 'notification updater',
+                data: 
+                (function () {
+                        var data = [];
+                         data.push({
+                          x: (new Date()).getTime()-5000,
+                          y: 1
+                        });
+                        data.push({
+                          x: (new Date()).getTime(),
+                          y: 1
+                        });
+                        return data;
+                }())
+            }
+            ]
+       });        
+    });
+});
+$(function () { 
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'graph text test'
+        },
+        xAxis: {
+          categories : ['<?php echo join($abscis,',')?>']
+        },
+        yAxis: {
+        },
+        series: [{
+            name: 'requests',
+            data: <?php echo $prepdata ?>
+        }
+        ]
+    });
+});
+</script>
