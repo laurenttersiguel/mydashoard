@@ -20,6 +20,7 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
         }
         return $row;
     }
+    
      public function getRequestByScript($id) 
     {
         $select  = $this->select()->where('script_name = ?', $id);
