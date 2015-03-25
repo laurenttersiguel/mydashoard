@@ -11,9 +11,6 @@ $this->headTitle($this->title);
           $grtabdata[] = [$scriptItem,(int)($nbItem*1000)];
           $abscis[]=$scriptItem;
       }     
-      echo $abscis[0];
-      echo nl2br("\n\n");
-      echo $abscis[1];
       $prepdata=json_encode($grtabdata);
 ?>
 </table>
@@ -29,11 +26,13 @@ $(function () {
                       var series1 = this.series[1];
                           setInterval(function () {
                                 var x = (new Date()).getTime();
-                                $.get('index/figure',
+                                $.post('index/figure',
+                                  {'message' : '<?php echo $abscis[0] ?>' }, 
                                         function (r) {
                                               series.addPoint([x, parseInt(r)], true, false,false);
                                         });
-                                $.get('index/figure2',
+                                $.post('index/figure2',
+                                  {'message' : '<?php echo $abscis[1] ?>' }, 
                                         function (b) {
                                            series1.addPoint([x, parseInt(b)], true, false,false);
                                         });
@@ -56,14 +55,10 @@ $(function () {
             }*/
         },
         series: [{
-                name: 'login',
+                name: '<?php echo $abscis[0] ?>',
                 data: 
                 (function () {
                         var data = [];
-                         data.push({
-                          x: (new Date()).getTime()-5000,
-                          y: 0
-                        });
                         data.push({
                           x: (new Date()).getTime(),
                           y: 0
@@ -72,17 +67,13 @@ $(function () {
                 }())
             },
             {
-                name: 'notification updater',
+                name: '<?php echo $abscis[1] ?>',
                 data: 
                 (function () {
                         var data = [];
-                         data.push({
-                          x: (new Date()).getTime()-5000,
-                          y: 1
-                        });
                         data.push({
                           x: (new Date()).getTime(),
-                          y: 1
+                          y: 0
                         });
                         return data;
                 }())

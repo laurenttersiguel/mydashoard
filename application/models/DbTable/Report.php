@@ -8,7 +8,9 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
     
      public function getRequestAll() 
     {
-        $select = $this->select()->order('req_count desc')
+        $id='run.php';
+        $select = $this->select()->where('script_name <> ?', $id)
+                          ->order('req_count desc')
                           ->limit(10);
         
         $row = $this->fetchAll($select);

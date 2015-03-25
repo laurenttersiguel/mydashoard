@@ -20,16 +20,22 @@ class IndexController extends Zend_Controller_Action
     }
     public function figureAction() 
     {
+        $request = $this->getRequest()->getPost();
+        $message = $request['message'];
+        
         $dbobj = new Application_Model_DbTable_Report();
-        $item = $dbobj->getRequestByScript("/login");
+        $item = $dbobj->getRequestByScript($message);
         $this->_helper->viewRenderer->setNoRender();
         $this->_helper->getHelper('layout')->disableLayout();
         echo $item->req_count;
     }
     public function figure2Action() 
     {
+        $request = $this->getRequest()->getPost();
+        $message = $request['message'];
+
         $dbobj = new Application_Model_DbTable_Report();
-        $item = $dbobj->getRequestByScript("/notification/updater");
+        $item = $dbobj->getRequestByScript($message);
         $this->_helper->viewRenderer->setNoRender();
         $this->_helper->getHelper('layout')->disableLayout();
         echo $item->req_count;
