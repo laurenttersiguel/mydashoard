@@ -15,19 +15,32 @@ class IndexController extends Zend_Controller_Action
               
               if ($form->isValid($formData)) {
 
-                    $user = $form->getValue('user');
+                    $login = $form->getValue('login');
                     $password = $form->getValue('password');
- 
-/*paste from here*/                    
+                                        echo "<br>";
+                                                            echo "login".$login;
+                    echo "<br>";
+                    echo $password;      
+                    echo "<br>";
                     $auth = Zend_Auth::getInstance();
                     $config = new Zend_Config_Ini('../application/configs/application.ini','production');
                     $log_path = $config->ldap->log_path;
                     $options = $config->ldap->toArray();
                     unset($options['log_path']);
-                    $adapter = new Zend_Auth_Adapter_Ldap($options,$user,$password);
+                    $adapter = new Zend_Auth_Adapter_Ldap($options,$login,$password);
                     $result = $auth->authenticate($adapter);
+                    if ($result === false){
+                    echo 'result is false';
+                    }else
+                    {
+                    echo 'result is true';
+                    }
                     if ($log_path) {
+                        echo 'test';       
+                        echo "<br>";
                         $messages = $result->getMessages();
+                        print_r($messages);
+                        echo "<br>";
                         $logger = new Zend_Log();
                         $logger->addWriter(new Zend_Log_Writer_Stream($log_path));
                         $filter = new Zend_Log_Filter_Priority(Zend_Log::DEBUG);
