@@ -21,9 +21,12 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
         return $row;
     }
     
-     public function getRequestByScript($id) 
+     public function getRequestByScript($id,$id2) 
     {
-        $select  = $this->select()->where('script_name = ?', $id);
+    $db = $this->getAdapter();
+        $select  = $this->select()->where(
+        $db->quoteInto('script_name = ? ',$id).'AND'.$db->quoteInto(' server_name = ? ', $id2)
+        );
         $row = $this->fetchRow($select);
         
         if (!$row) {
