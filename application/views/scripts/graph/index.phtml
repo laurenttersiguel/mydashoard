@@ -1,0 +1,127 @@
+<?php
+$this->title = 'Number of request / hour';
+$this->headTitle($this->title);
+?>
+<p>
+<table>
+<!--<p><a href="<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">authentification</a></p>-->
+<!--<meta http-equiv="refresh" content="5; URL=<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">-->
+<?php 
+      foreach($this->items as $item) {
+          $scriptItem=$this->escape($item->script_name);
+          $instanceItem=$this->escape($item->server_name);
+          $nbItem=$this->escape($item->req_count);
+          $grtabdata[] = array($instanceItem.$scriptItem,(int)($nbItem*4));
+          $abscis[]=$scriptItem;
+          $abscisServer[]=$instanceItem;
+      }     
+      $prepdata=json_encode($grtabdata);
+?>
+<div class="show-msg"></div>
+</table>
+<script>
+$(function () {
+  $(document).ready(function () {
+     $('#container').highcharts({
+        chart: {
+            type: 'spline',
+            events: {
+                load: function () {
+                      var series = this.series[0];
+                      var series1 = this.series[1];
+                          setInterval(function () {
+                                var x = (new Date()).getTime();
+                                $.post('graph/figure',
+                                  {'message' : '<?php echo $abscis[0] ?>',
+                                  'message2' : '<?php echo $abscisServer[0] ?>' }, 
+                                        function (r) {
+                                              series.addPoint([x, parseInt(r*4)], true, false,false);
+                                        });
+                                $.post('graph/figure2',
+                                  {'message' : '<?php echo $abscis[1] ?>',
+                                  'message2' : '<?php echo $abscisServer[1] ?>' }, 
+                                        function (b) {
+                                              $(".show-msg").html(b);
+                                           series1.addPoint([x, parseInt(b*4)], true, false,false);
+                                        });
+                      }, 5000);
+                 }
+            }
+        },
+        title: {
+            text: 'Live customer activity'
+        },
+        xAxis: {
+              type: 'datetime'
+        },
+        yAxis: {
+                   /* minPadding: 0.2,
+            maxPadding: 0.2,
+            title: {
+                text: 'Value',
+                margin: 80
+            }*/
+        },
+        series: [{
+                name: '<?php echo $abscisServer[0].$abscis[0] ?>',
+                data: 
+                (function () {
+                        var data = [];
+                        data.push({
+                          x: (new Date()).getTime(),
+                          y: 0
+                        });
+                        return data;
+                }())
+            },
+            {
+                name: '<?php echo $abscisServer[1].$abscis[1] ?>',
+                data: 
+                (function () {
+                        var data = [];
+                        data.push({
+                          x: (new Date()).getTime(),
+                          y: 0
+                        });
+                        return data;
+                }())
+            }
+            ]
+       });        
+    });
+});
+$(function () { 
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Top Customer Activity'
+        },
+        xAxis: {
+                  type: 'category',
+            labels: {
+                rotation: -60,
+                style: {
+                    fontSize: '9px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+                    min: 0,
+            title: {
+                text: 'Request Number / hour'
+            }
+        },
+                legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'requests',
+            data: <?php echo $prepdata ?>
+        }
+        ]
+    });
+});
+</script>
