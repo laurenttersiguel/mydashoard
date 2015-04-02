@@ -2,18 +2,16 @@
 $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 $this->headTitle()->setSeparator(' - ');
 $this->headTitle('this is layout');
-
-echo $this->doctype(); ?>
+echo $this->doctype(); 
+?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-
 <head>
     <?php echo $this->HeadMeta(); ?>
     <?php echo $this->headTitle(); ?>
     <?php echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css'); ?>
-<script src="js/jquery.min.js"></script>
-<script src="js/highcharts.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/highcharts.js"></script>
 </head>
-
 <body>
     <div id="content">
         <h1><?php echo $this->escape($this->title); ?></h1>

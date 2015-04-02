@@ -2,3 +2,26 @@
 $this->title = "Mongo DB";
 $this->headTitle($this->title);
 ?>
+<script>
+$(function () { 
+    $('#container').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Publish activity'
+        },
+        xAxis: {
+        },
+        yAxis: {
+        },
+        legend: {
+        },
+        series: [{
+            name: 'requests',
+            data: [<?php echo implode($this->items, ',') ?>]
+        }
+        ]
+    });
+});
+</script>

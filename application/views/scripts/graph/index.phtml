@@ -6,6 +6,7 @@ $this->headTitle($this->title);
 <table>
 <!--<p><a href="<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">authentification</a></p>-->
 <!--<meta http-equiv="refresh" content="5; URL=<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">-->
+<!--<div class="show-msg"></div>-->
 <?php 
       foreach($this->items as $item) {
           $scriptItem=$this->escape($item->script_name);
@@ -17,7 +18,6 @@ $this->headTitle($this->title);
       }     
       $prepdata=json_encode($grtabdata);
 ?>
-<div class="show-msg"></div>
 </table>
 <script>
 $(function () {
