@@ -25,7 +25,7 @@ class MongoController extends Zend_Controller_Action
           echo 'count on spaceagg '.$evc.'<br>';
 
           echo '----------------platformagg-------------'.'<br>';
-/*          $query = array( 'batchId' => 'drop-instance' );*/
+          /*  $query = array( 'batchId' => 'drop-instance' );*/
           /* ,'infos.eventType' => 'read'  */
           $yest=date('d.m.Y',strtotime("-30 days"));
           echo 'yest '.$yest.'<br>';;
@@ -38,16 +38,26 @@ class MongoController extends Zend_Controller_Action
           $nowmongotime = new Mongodate($nowd);
           
           $query = array('date' => array('$gt'=>$mongotime,'$lt'=>$nowmongotime),'infos.eventType' => 'read');
-          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'));
-          $i=0;
+          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'));/*->sort(array('date));*/
           $exp=array();
           foreach ( $cursorptf as $id => $value )
           {
-              $exp[$i]=$value['hits'];
-              $this->view->items=$value['hits'];
-              $i++; 
+              /*$exp[$i]=$value['hits'];*/
+              $dateconv=date('Y-M-d', $value['date']->sec);
+              $exp[] = array($dateconv,$value['hits']);
           }
+          
           $this->view->items=$exp;
+          
+/*
+          foreach($this->items as $item) {
+          $scriptItem=$this->escape($item->script_name);
+          $instanceItem=$this->escape($item->server_name);
+          $nbItem=$this->escape($item->req_count);
+          $grtabdata[] = array($instanceItem.$scriptItem,(int)($nbItem*4));
+          }     
+*/    
+          
           
 /*
           echo '---------------- batch-------------'.'<br>';

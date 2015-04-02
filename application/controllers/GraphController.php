@@ -7,7 +7,6 @@ class GraphController extends Zend_Controller_Action
         /* Initialize action controller here */
     }
     
-    
    public function preDispatch()
 	{
 		$auth = Zend_Auth::getInstance();
@@ -15,7 +14,6 @@ class GraphController extends Zend_Controller_Action
         			$this->_redirect('/auth/login');
         }
     }
-  
     
     public function indexAction()
     {

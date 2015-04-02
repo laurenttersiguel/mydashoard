@@ -2,6 +2,14 @@
 $this->title = "Mongo DB";
 $this->headTitle($this->title);
 ?>
+
+<p>
+<?php 
+$prepdata=json_encode($this->items);
+print_r($prepdata);
+?>
+</p>
+
 <script>
 $(function () { 
     $('#container').highcharts({
@@ -12,6 +20,15 @@ $(function () {
             text: 'Publish activity'
         },
         xAxis: {
+                          type: 'category',
+            labels: {
+                rotation: -60,
+                style: {
+                    fontSize: '9px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+
         },
         yAxis: {
         },
@@ -19,7 +36,8 @@ $(function () {
         },
         series: [{
             name: 'requests',
-            data: [<?php echo implode($this->items, ',') ?>]
+            data: <?php echo $prepdata ?> 
+            /*[<?php echo implode($this->items, ',') ?>]*/
         }
         ]
     });
