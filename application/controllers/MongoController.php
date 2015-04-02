@@ -38,7 +38,7 @@ class MongoController extends Zend_Controller_Action
           $nowmongotime = new Mongodate($nowd);
           
           $query = array('date' => array('$gt'=>$mongotime,'$lt'=>$nowmongotime),'infos.eventType' => 'read');
-          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'));/*->sort(array('date));*/
+          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $exp=array();
           foreach ( $cursorptf as $id => $value )
           {
