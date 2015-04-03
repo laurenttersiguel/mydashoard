@@ -5,7 +5,9 @@ class MongoController extends Zend_Controller_Action
 {
     public function init()
     {
-        /* Initialize action controller here */
+        $response = $this->getResponse();
+        $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
+ 
     }
     
    public function preDispatch()
@@ -13,24 +15,27 @@ class MongoController extends Zend_Controller_Action
 		$auth = Zend_Auth::getInstance();
         		if (!$auth->hasIdentity()) {
         			$this->_redirect('/auth/login');
-        }
+            }
     }
     public function indexAction()
     {
+    
+    /*
+    $this->view->pageTitle = "Zend Layout Example";
+
+$this->view->bodyTitle = '<h1>Hello World!</h1>';
+$this->view->bodyCopy = "<p>Lorem ipsum dolor etc.</p>";
+*/
+
           $m = new MongoClient("localhost"); // connect 27017
           $db = $m->selectDB("analytics");
           $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
-
           $evc=$db->spaceagg->count();
-          echo 'count on spaceagg '.$evc.'<br>';
 
-          echo '----------------platformagg-------------'.'<br>';
           /*  $query = array( 'batchId' => 'drop-instance' );*/
           /* ,'infos.eventType' => 'read'  */
           $yest=date('d.m.Y',strtotime("-30 days"));
-          echo 'yest '.$yest.'<br>';;
           $yestime=strtotime($yest);
-          echo 'yestime '.$yestime.'<br>';
 
           $today=date('d.m.Y');
           $nowd=strtotime($today);
@@ -42,7 +47,6 @@ class MongoController extends Zend_Controller_Action
           $exp=array();
           foreach ( $cursorptf as $id => $value )
           {
-              /*$exp[$i]=$value['hits'];*/
               $dateconv=date('Y-M-d', $value['date']->sec);
               $exp[] = array($dateconv,$value['hits']);
           }

@@ -3,6 +3,13 @@
 class IndexController extends Zend_Controller_Action
 {
 
+    public function init()
+    {
+        $response = $this->getResponse();
+        $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
+ 
+    }
+
 	public function preDispatch()
 	{
 		$auth = Zend_Auth::getInstance();
@@ -46,11 +53,17 @@ class IndexController extends Zend_Controller_Action
           $results = $ldapcnct->search('(uid=*)',
                                   'dc=bluekiwi-software,dc=com',
                                   'sub');
+                                  echo '<table>';
+          echo '<tr>';
+          echo '<td>'.'COMMON NAME'.'</td>'.'<td>'.'GIVEN NAME'.'</td>'.'<td>'.'MAIL'.'</td>' ;
+          echo '</tr>';
+                               
           foreach ($results as $item) {
-              echo $item['cn'][0].str_repeat('&nbsp;', 10).$item['givenname'][0].str_repeat('&nbsp;', 10).$item['mail'][0];
-
-              echo '<br>';
+              echo '<tr>';
+              echo '<td>'.$item['cn'][0].'</td>'.'<td>'.$item['givenname'][0].'</td>'.'<td>'.$item['mail'][0].'</td>' ;
+              echo '</tr>';
           }
+          echo '</table>';
     }
 }
 /*

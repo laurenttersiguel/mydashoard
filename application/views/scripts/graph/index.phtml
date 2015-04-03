@@ -2,6 +2,8 @@
 $this->title = 'Number of request / hour';
 $this->headTitle($this->title);
 ?>
+<!--<?php echo $this->bodyTitle ;?>-->
+<!--<?php echo $this->bodyCopy ;?>-->
 <table>
 <!--<p><a href="<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">authentification</a></p>-->
 <!--<meta http-equiv="refresh" content="5; URL=<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">-->
@@ -21,7 +23,7 @@ $this->headTitle($this->title);
 <script>
 $(function () {
   $(document).ready(function () {
-     $('#container').highcharts({
+     $('#containerUp').highcharts({
         chart: {
             type: 'spline',
             events: {
@@ -90,7 +92,7 @@ $(function () {
     });
 });
 $(function () { 
-    $('#container1').highcharts({
+    $('#containerDown').highcharts({
         chart: {
             type: 'column'
         },

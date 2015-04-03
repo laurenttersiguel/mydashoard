@@ -1,18 +1,11 @@
 <?php
 $this->title = "Mongo DB";
 $this->headTitle($this->title);
-?>
-
-<p>
-<?php 
 $prepdata=json_encode($this->items);
-print_r($prepdata);
 ?>
-</p>
-
 <script>
 $(function () { 
-    $('#container').highcharts({
+    $('#containerUp').highcharts({
         chart: {
             type: 'line'
         },
