@@ -15,7 +15,8 @@ class MongoController extends Zend_Controller_Action
     }
     
     public function indexAction()
-    {
+     {
+date_default_timezone_set('UTC');
     
 
           $m = new MongoClient("localhost"); // connect 27017
