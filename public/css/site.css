@@ -21,6 +21,14 @@ td, th {
     padding-right: 5px;
 }
 
+#sidebar{
+     position:fixed;
+     left: 0;
+     top: 0;
+     bottom: 0;
+
+}
+
 /* style form */
 form dt {
     width: 100px;
@@ -37,3 +45,4 @@ form dd {
 form #submitbutton {
     margin-left: 100px;
 }
+

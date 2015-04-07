@@ -3,99 +3,76 @@
 
 class MongoController extends Zend_Controller_Action
 {
-    public function init()
-    {
-        $response = $this->getResponse();
-        $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
- 
+    
+     public function preDispatch()
+  	{
+      $auth = Zend_Auth::getInstance();
+      if (!$auth->hasIdentity()) {
+      	$this->_redirect('/auth/login');
+      }
+      $response = $this->getResponse();
+      $response->insert('sidebar', $this->view->render('sidebar.phtml'));  
     }
     
-   public function preDispatch()
-	{
-		$auth = Zend_Auth::getInstance();
-        		if (!$auth->hasIdentity()) {
-        			$this->_redirect('/auth/login');
-            }
-    }
     public function indexAction()
     {
     
-    /*
-    $this->view->pageTitle = "Zend Layout Example";
-
-$this->view->bodyTitle = '<h1>Hello World!</h1>';
-$this->view->bodyCopy = "<p>Lorem ipsum dolor etc.</p>";
-*/
 
           $m = new MongoClient("localhost"); // connect 27017
           $db = $m->selectDB("analytics");
           $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
           $evc=$db->spaceagg->count();
 
-          /*  $query = array( 'batchId' => 'drop-instance' );*/
-          /* ,'infos.eventType' => 'read'  */
-          $yest=date('d.m.Y',strtotime("-30 days"));
-          $yestime=strtotime($yest);
-
-          $today=date('d.m.Y');
-          $nowd=strtotime($today);
-          $mongotime = new Mongodate($yestime);
-          $nowmongotime = new Mongodate($nowd);
-          
-          $query = array('date' => array('$gt'=>$mongotime,'$lt'=>$nowmongotime),'infos.eventType' => 'read');
-          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $exp=array();
-          foreach ( $cursorptf as $id => $value )
-          {
-              $dateconv=date('Y-M-d', $value['date']->sec);
-              $exp[] = array($dateconv,$value['hits']);
-          }
-          
-          $this->view->items=$exp;
-          
-/*
-          foreach($this->items as $item) {
-          $scriptItem=$this->escape($item->script_name);
-          $instanceItem=$this->escape($item->server_name);
-          $nbItem=$this->escape($item->req_count);
-          $grtabdata[] = array($instanceItem.$scriptItem,(int)($nbItem*4));
-          }     
-*/    
-          
-          
-/*
-          echo '---------------- batch-------------'.'<br>';
-          $cursorbatch = $db->batch->find();
-          while ( $cursorbatch->hasNext() )
-          {
-              var_dump( $cursorbatch->getNext() );
-          }
 
-          $query = array( 'i' => 71 );
-          $query = array(  "i" => array( '$gt' => 50 )  );
-          $cursor = $db->event->find( $query );
-          while ( $cursor->hasNext() )
-          {
-              var_dump( $cursor->getNext() );
+          for ($i = 10; $i > 0; $i--) {
+                $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1, 1,   date("Y"));
+                $mongoinf = new Mongodate($lastmonthinf);
+                 
+                $lastmonthsup = mktime(0, 0, 0, date("m")-$i, 1,   date("Y"));
+                $mongosup = new Mongodate($lastmonthsup);
+                
+                $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'read');
+                $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
+                $sum=0;
+                foreach ( $cursorptf as $id => $value )
+                    $sum += $value['hits'];
+                $dateconv=date('Y-M', $lastmonthinf);
+                $exp[]=array($dateconv,$sum);
+              }
+              $this->view->items=$exp;
           }
-
-          foreach($doc as $value)
-            {
-               echo $value["_id"] . "\n";
-            }
-        $stream = fopen ('tokens.data', 'r');
-          $start = time(); 
-          while ($line = fgets ($stream)) {
-          $doc = json_decode ($line);
-          $doc->_id = $doc->id;
-          unset ($doc->id);
-          print "doing {$doc->_id}\n";
-          $db->hop->insert($doc);
-          }
-          print "took: " . (time() - $start);
-          fclose ($stream);
-*/
           
-    }
+          public function jsgetAction()
+          {
+              $m = new MongoClient("localhost"); // connect 27017
+              $db = $m->selectDB("analytics");
+              $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
+              $evc=$db->spaceagg->count();
+    
+              $yest=date('d.m.Y',strtotime("-365 days"));
+              $yestime=strtotime($yest);
+              $mongoinf = new Mongodate($yestime);
+    
+              $today=date('d.m.Y');
+              $nowd=strtotime($today);
+              $mongosup = new Mongodate($nowd);
+              
+              $query = array('date' => array('$gt'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'read');
+              $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
+              $exp=array();
+              foreach ( $cursorptf as $id => $value )
+              {
+                  $dateconv=date('Y-M-d', $value['date']->sec);
+                  $exp[] = array($dateconv,$value['hits']);
+              }
+              
+              $this->view->items=$exp;
+              $this->_helper->viewRenderer->setNoRender();
+              $this->_helper->getHelper('layout')->disableLayout();
+              echo json_encode($exp,JSON_FORCE_OBJECT);
+
+              
+          }
 }
 ?>
