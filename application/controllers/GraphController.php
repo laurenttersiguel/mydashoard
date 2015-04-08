@@ -2,10 +2,6 @@
 
 class GraphController extends Zend_Controller_Action
 {
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
     
    public function preDispatch()
 	{
@@ -13,6 +9,10 @@ class GraphController extends Zend_Controller_Action
         		if (!$auth->hasIdentity()) {
         			$this->_redirect('/auth/login');
         }
+        
+              $response = $this->getResponse();
+      $response->insert('sidebar', $this->view->render('sidebar.phtml'));  
+
     }
     
     public function indexAction()

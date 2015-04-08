@@ -1,9 +1,20 @@
 <?php
 $this->title = "Mongo DB";
 $this->headTitle($this->title);
-$prepdata=json_encode($this->items);
 ?>
-<div class="show-msg"></div>
+<div class="show-msg"><?php echo $this->form ?></div>
+<table> 
+ <tr>
+  <td>
+   <div id="containerUp"  style="width:50%; height:300px;"></div>
+   <div id="containerDown" style="width:50%; height:300px;"></div>
+  </td>
+  <td>
+   <div id="containerUpLeft"  style="width:50%; height:300px;"></div>
+   <div id="containerDownLeft" style="width:50%; height:300px;"></div>
+  </td>
+ </tr>
+</table>
 <script>
 $(function () { 
     $('#containerUp').highcharts({
@@ -23,15 +34,78 @@ $(function () {
                 }
             }
         },
-        yAxis: {
+        yAxis: {    min:0
+
         },
         legend: {
         },
         series: [{
             name: 'requests',
-            data: <?php echo $prepdata ?> 
+            data: <?php echo $this->items ?> 
         }
         ]
     });
+});
+
+function toto(datachart){
+  var datat=jQuery.parseJSON(datachart);
+$('#containerDown').highcharts({
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Publish activity'
+    },
+    xAxis: {
+    type: 'category'
+    },
+    yAxis: {
+    min:0
+    },
+    series: [{
+            name: 'requests',
+            data: datat
+        }
+        ]
+});         
+}
+$(document).ready(function(){
+    $.get('mongo/jsget',
+            function (data) {
+              toto(data);
+          }
+   );
+
+});
+
+function totob(datachart){
+  var datat=jQuery.parseJSON(datachart);
+$('#containerUpLeft').highcharts({
+    chart: {
+        type: 'line'
+    },
+    title: {
+        text: 'Publish activity'
+    },
+    xAxis: {
+    type: 'category'
+    },
+    yAxis: {
+    min:0
+    },
+    series: [{
+            name: 'requests',
+            data: datat
+        }
+        ]
+});         
+}
+$(document).ready(function(){
+    $.get('mongo/jsgetb',
+            function (data) {
+              totob(data);
+          }
+   );
+
 });
 </script>

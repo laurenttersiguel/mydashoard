@@ -1,25 +1,18 @@
 <?php
 $this->title = 'Number of request / hour';
 $this->headTitle($this->title);
+foreach($this->items as $item) {
+    $scriptItem=$this->escape($item->script_name);
+    $instanceItem=$this->escape($item->server_name);
+    $nbItem=$this->escape($item->req_count);
+    $grtabdata[] = array($instanceItem.$scriptItem,(int)($nbItem*4));
+    $abscis[]=$scriptItem;
+    $abscisServer[]=$instanceItem;
+}     
+$prepdata=json_encode($grtabdata);
 ?>
-<!--<?php echo $this->bodyTitle ;?>-->
-<!--<?php echo $this->bodyCopy ;?>-->
-<table>
-<!--<p><a href="<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">authentification</a></p>-->
-<!--<meta http-equiv="refresh" content="5; URL=<?php echo $this->url(array('controller'=>'index','action'=>'auth'));?>">-->
-<!--<div class="show-msg"></div>-->
-<?php 
-      foreach($this->items as $item) {
-          $scriptItem=$this->escape($item->script_name);
-          $instanceItem=$this->escape($item->server_name);
-          $nbItem=$this->escape($item->req_count);
-          $grtabdata[] = array($instanceItem.$scriptItem,(int)($nbItem*4));
-          $abscis[]=$scriptItem;
-          $abscisServer[]=$instanceItem;
-      }     
-      $prepdata=json_encode($grtabdata);
-?>
-</table>
+<div id="containerUp"  style="width:50%; height:300px;"></div>
+<div id="containerDown" style="width:50%; height:300px;"></div>
 <script>
 $(function () {
   $(document).ready(function () {
@@ -110,7 +103,7 @@ $(function () {
             }
         },
         yAxis: {
-                    min: 0,
+            min: 0,
             title: {
                 text: 'Request Number / hour'
             }

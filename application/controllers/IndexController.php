@@ -3,12 +3,6 @@
 class IndexController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-        $response = $this->getResponse();
-        $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
- 
-    }
 
 	public function preDispatch()
 	{
@@ -16,6 +10,10 @@ class IndexController extends Zend_Controller_Action
     if (!$auth->hasIdentity()) {
     	$this->_redirect('/auth/login');
     }
+      $response = $this->getResponse();
+        $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
+ 
+
   }
     
   

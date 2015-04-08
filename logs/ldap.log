@@ -428,3 +428,94 @@
 2015-03-30T16:25:59+02:00 DEBUG (7): Ldap: 2: dsqds authentication failed: 0x20: No object found for: (&(objectClass=inetOrgPerson)(uid=dsqds))
 2015-03-30T18:12:16+02:00 DEBUG (7): Ldap: 1: host=localhost,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
 2015-03-30T18:12:16+02:00 DEBUG (7): Ldap: 2: hjkh authentication failed: 0x20: No object found for: (&(objectClass=inetOrgPerson)(uid=hjkh))
+2015-04-08T13:35:06+02:00 DEBUG (7): Ldap: 1: host=localhost,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:35:06+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:35:06+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:35:06+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:44:33+02:00 DEBUG (7): Ldap: 1: host=localhost,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:44:33+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:44:33+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:44:33+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:51:40+02:00 DEBUG (7): Ldap: 1: host=localhost,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:51:40+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:51:40+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:51:40+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://localhost:389]
+2015-04-08T13:52:44+02:00 DEBUG (7): Ldap: 1: host=10.110.0.25,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:52:44+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:52:44+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:52:44+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:53:33+02:00 DEBUG (7): Ldap: 1: host=10.110.0.25,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:53:33+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:53:33+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:53:33+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:54:09+02:00 DEBUG (7): Ldap: 1: host=10.110.0.25,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:54:09+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:54:09+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:54:09+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:55:02+02:00 DEBUG (7): Ldap: 1: host=10.110.0.25,port=389,accountDomainName=bluekiwi-software.com,accountCanonicalForm=2,username=cn=admin,dc=bluekiwi-software,dc=com,password=*****,baseDn=ou=people,dc=bluekiwi-software,dc=com,bindRequiresDn=1,accountFilterFormat=(&(objectClass=inetOrgPerson)(uid=%s))
+2015-04-08T13:55:02+02:00 DEBUG (7): Ldap: 2: C:\wamp\www\bkInternalDashboard\library\Zend\Ldap.php(854): 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]
+2015-04-08T13:55:02+02:00 DEBUG (7): Ldap: 3: #0 C:\wamp\www\bkInternalDashboard\library\Zend\Auth\Adapter\Ldap.php(315): Zend_Ldap->bind('lte', '*****')
+  #1 C:\wamp\www\bkInternalDashboard\library\Zend\Auth.php(117): Zend_Auth_Adapter_Ldap->authenticate()
+  #2 C:\wamp\www\bkInternalDashboard\application\controllers\AuthController.php(27): Zend_Auth->authenticate(Object(Zend_Auth_Adapter_Ldap))
+  #3 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Action.php(516): authController->loginAction()
+  #4 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Dispatcher\Standard.php(308): Zend_Controller_Action->dispatch('loginAction')
+  #5 C:\wamp\www\bkInternalDashboard\library\Zend\Controller\Front.php(954): Zend_Controller_Dispatcher_Standard->dispatch(Object(Zend_Controller_Request_Http), Object(Zend_Controller_Response_Http))
+  #6 C:\wamp\www\bkInternalDashboard\library\Zend\Application\Bootstrap\Bootstrap.php(105): Zend_Controller_Front->dispatch()
+  #7 C:\wamp\www\bkInternalDashboard\library\Zend\Application.php(382): Zend_Application_Bootstrap_Bootstrap->run()
+  #8 C:\wamp\www\bkInternalDashboard\public\index.php(26): Zend_Application->run()
+  #9 {main}
+2015-04-08T13:55:02+02:00 DEBUG (7): Ldap: 4: lte authentication failed: 0x1: Failed to retrieve DN for account: lte [0x51 (Can't contact LDAP server): ldap://10.110.0.25:389]

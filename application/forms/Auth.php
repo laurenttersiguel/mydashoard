@@ -16,7 +16,7 @@ class Application_Form_Auth extends Zend_Form
                 ->addFilter('StringTrim')
                 ->addValidator('NotEmpty');
 
-        $password = new Zend_Form_Element_Text('password');
+        $password = new Zend_Form_Element_Password('password');
         $password->setLabel('Password')
               ->setRequired(true)
               ->addFilter('StripTags')
