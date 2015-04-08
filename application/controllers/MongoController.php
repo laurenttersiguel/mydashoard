@@ -18,29 +18,29 @@ class MongoController extends Zend_Controller_Action
         $db = $m->selectDB("analytics");
         $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
         
-        $evc=$db->platformagg->distinct('infos.instance');
-        
+        $timemong= new Mongodate(strtotime(date('d.m.Y')));
+        $evc=$db->platformagg->distinct('infos.instance',array('date' => $timemong));
         $form = new Application_Form_Instance();
-        
-        $form->send->setLabel('Instance',array('date' =>new Mongodate(time())));
-        $form->id->setLabel('id')->setMultiOptions($evc)->setRequired(true)->addValidator('NotEmpty', true);
-        
+        $form->instanceName->setLabel('instanceName')->setMultiOptions($evc)->setRequired(true)->addValidator('NotEmpty', true);
         $this->view->form = $form;
+        $instance='blank';
         if ($this->getRequest()->isPost()) {
               $formData = $this->getRequest()->getPost();
               if ($form->isValid($formData)) {
-                    $instance = $form->getValue('instance');
-                            } else {
+                    $evcitem = $form->getValue('instanceName');
+                    $instance=$evc[$evcitem];
+              } else {
                     $form->populate($formData);
               }         
         }
+
         $exp=array();
         for ($i = 10; $i > 0; $i--) {
           $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1, 1,   date("Y"));
           $mongoinf = new Mongodate($lastmonthinf);
           $lastmonthsup = mktime(0, 0, 0, date("m")-$i, 1,   date("Y"));
           $mongosup = new Mongodate($lastmonthsup);
-          $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>1,'infos.instance'=>'zenstg','infos.eventType' => 'read');
+          $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>1,'infos.instance'=>$instance,'infos.eventType' => 'read');
           $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $sum=0;
           foreach ( $cursorptf as $id => $value ){

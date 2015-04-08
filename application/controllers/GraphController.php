@@ -12,6 +12,7 @@ class GraphController extends Zend_Controller_Action
         
               $response = $this->getResponse();
       $response->insert('sidebar', $this->view->render('sidebar.phtml'));  
+      date_default_timezone_set('UTC');
 
     }
     

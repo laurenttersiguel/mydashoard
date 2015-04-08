@@ -12,7 +12,8 @@ class IndexController extends Zend_Controller_Action
     }
       $response = $this->getResponse();
         $response->insert('sidebar', $this->view->render('sidebar.phtml'));       /* Initialize action controller here */
- 
+ date_default_timezone_set('UTC');
+
 
   }
     

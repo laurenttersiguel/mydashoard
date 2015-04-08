@@ -6,11 +6,12 @@ class Application_Form_Instance extends Zend_Form
     {
         $this->setName('Instance');
 
-        $id = new Zend_Form_Element_Select('id');
+        $instanceName = new Zend_Form_Element_Select('instanceName');
 
         $send = new Zend_Form_Element_Submit('send');
-        $send->setAttrib('id', 'sendbutton');
+        $send->setAttrib('id', 'sendbutton')
+              ->setLabel('Valid');
         
-        $this->addElements(array($id,$send));
+        $this->addElements(array($instanceName,$send));
     }
 }
