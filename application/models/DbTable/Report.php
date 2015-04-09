@@ -2,10 +2,8 @@
 
 class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
 {
-
     protected $_name = 'report_by_server_and_script';
     protected $_primary = 'script_name';
-    
     
      public function getRequestDistinct() 
     {
@@ -20,9 +18,9 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
         if (!$prerow) {
             throw new Exception("executed script was not found in database");
         }
-      
         return $prerow;
     }
+
      public function getRequestAll($instance) 
     {
         $id='backend';
@@ -31,10 +29,10 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
                                 ->order('req_count desc')
                                 ->limit(1);
               $prerow = $this->fetchRow($preselect);
-             
               if (!$prerow) {
                   throw new Exception("executed script was not found in database");
               }
+              $instance = $prerow->server_name;
         }
               
         $select = $this->select()->where('script_name <> ?', $id)
@@ -43,24 +41,21 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
                        ->limit(10);
         
         $row = $this->fetchAll($select);
-                
         if (!$row) {
             throw new Exception("executed script was not found in database");
         }
-       
         return $row;
     }
     
-     public function getRequestByScript($id,$id2) 
+     public function getRequestByScript($script,$server) 
     {
         $db = $this->getAdapter();
         $select  = $this->select()->where(
-        $db->quoteInto('script_name = ? ',$id).'AND'.$db->quoteInto(' server_name = ? ', $id2)
+          $db->quoteInto('script_name = ? ',$script).'AND'.$db->quoteInto(' server_name = ? ', $server)
         );
         $row = $this->fetchRow($select);
-        
         if (!$row) {
-            throw new Exception("unable to find $id");
+            throw new Exception("request script was not found in database");
         }
         return $row;
     }

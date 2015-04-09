@@ -16,13 +16,6 @@ set_include_path(implode(PATH_SEPARATOR, array(
 /** Zend_Application */
 require_once 'Zend/Application.php';
 
-// Register the autoloader
-//require_once 'Zend/Loader.php';
-//Zend_Loader::registerAutoload();
-
-// Initialise Zend_Layout's MVC helpers
-//Zend_Layout::startMvc(array('layoutPath' => ROOT_DIR.'/application/views/layouts'));
-
 // Create application, bootstrap, and run
 $application = new Zend_Application(
     APPLICATION_ENV,

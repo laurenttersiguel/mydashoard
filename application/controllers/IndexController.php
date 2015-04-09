@@ -5,16 +5,16 @@ class IndexController extends Zend_Controller_Action
   	public function preDispatch()
   	{
           $auth = Zend_Auth::getInstance();
-          if (!$auth->hasIdentity()) {
+          if (!$auth->hasIdentity()) 
             $this->_redirect('/auth/login');
-          }
-          date_default_timezone_set('UTC');
     }
     
     public function indexAction(){
           $auth = Zend_Auth::getInstance();
           $id= $auth->getIdentity();
           echo 'user connected '.$id; 
+          $this->view->title = "Live Customer";
+          $this->view->headTitle($this->view->title, 'PREPEND');
     }
     
     public function listAction(){
@@ -29,7 +29,7 @@ class IndexController extends Zend_Controller_Action
           $results = $ldapcnct->search('(uid=*)',
                                   'dc=bluekiwi-software,dc=com',
                                   'sub');
-                                  echo '<table>';
+          echo '<table>';
           echo '<tr>';
           echo '<td>'.'COMMON NAME'.'</td>'.'<td>'.'GIVEN NAME'.'</td>'.'<td>'.'MAIL'.'</td>' ;
           echo '</tr>';

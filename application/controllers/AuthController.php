@@ -4,13 +4,10 @@ class authController extends Zend_Controller_Action
 {
     public function init()
     {
-        /* Initialize action controller here */
-        /*Zend_Auth::getInstance()->clearIdentity();*/
     }
  
    public function loginAction()
     { 
-       date_default_timezone_set('UTC');
        $form = new Application_Form_Auth();
        $form->send->setLabel('Authenticate');
        $this->view->form = $form;

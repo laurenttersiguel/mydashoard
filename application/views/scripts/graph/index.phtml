@@ -53,23 +53,20 @@ $(function () {
                                               $(".show-msg").html(b);
                                            series1.addPoint([x, parseInt(b*4)], true, false,false);
                                         });
-                      }, 1000);
+                      }, 5000);
                  }
             }
-        },
+        },  
         title: {
-            text: '<?php echo 'Live '.$abscisServer[0].' Activity' ?>'
+            text: '<?php echo 'Live '.$abscisServer[0].' Activity (5 sec)' ?>'
         },
         xAxis: {
               type: 'datetime'
         },
         yAxis: {
-                   /* minPadding: 0.2,
-            maxPadding: 0.2,
             title: {
-                text: 'Value',
-                margin: 80
-            }*/
+                   text : 'Request / hour'
+            }
         },
         series: [{
                 name: '<?php echo $abscis[0] ?>'
@@ -91,7 +88,7 @@ $(function () {
             text: 'Top HTTP Request'
         },
         xAxis: {
-                  type: 'category',
+            type: 'category',
             labels: {
                 rotation: -60,
                 style: {
@@ -103,10 +100,10 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'Request Number / hour'
+                text: 'Request / hour'
             }
         },
-                legend: {
+        legend: {
             enabled: false
         },
         series: [{

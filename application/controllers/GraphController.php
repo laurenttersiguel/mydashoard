@@ -6,16 +6,17 @@ class GraphController extends Zend_Controller_Action
     public function preDispatch()
 	  {
     		$auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) 
+        if (!$auth->hasIdentity()) {
           	$this->_redirect('/auth/login');
-        date_default_timezone_set('UTC');
+  }
     }
     
     public function indexAction()
     {
+            $this->view->title = "Live Customer";
+            $this->view->headTitle($this->view->title, 'PREPEND');
     
         $dbobj = new Application_Model_DbTable_Report();
-
         $evc = $dbobj->getRequestDistinct();
 
         foreach($evc as $item) {
@@ -36,7 +37,8 @@ class GraphController extends Zend_Controller_Action
                     $form->populate($formData);
               }         
         }
-        if ($instance!=null){    echo $instance;}
+        if ($instance!=null)    
+              echo $instance;
     
         $this->view->items = $dbobj->getRequestAll($instance);
     }
