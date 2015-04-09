@@ -1,9 +1,4 @@
-<?php
-$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
-$this->headTitle()->setSeparator(' - ');
-$this->headTitle('internal dashboard');
-echo $this->doctype(); 
-?>
+<?php echo $this->doctype(); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
     <?php echo $this->HeadMeta(); ?>
@@ -16,6 +11,9 @@ echo $this->doctype();
     <div id="content">
         <h1><?php echo $this->escape($this->title); ?></h1>
         <?php echo $this->layout()->content; ?>
+    </div>
+    <div id="sidebar" class="sidebar" >
+        <?php echo $this->layout()->sidebar; ?>
     </div>
 </body>
 </html>

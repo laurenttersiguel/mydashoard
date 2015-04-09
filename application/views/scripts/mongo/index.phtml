@@ -2,16 +2,21 @@
 $this->title = "Mongo DB";
 $this->headTitle($this->title);
 ?>
-<div class="show-msg"><?php echo $this->form ?></div>
 <table> 
  <tr>
   <td>
    <div id="containerUp"  style="width:50%; height:300px;"></div>
+  </td>
+  <td>
+   <div id="containerUpLeft"  style="width:100%; height:300px;"></div>
+  </td>
+ </tr>
+ <tr>
+  <td>
    <div id="containerDown" style="width:50%; height:300px;"></div>
   </td>
   <td>
-   <div id="containerUpLeft"  style="width:50%; height:300px;"></div>
-   <div id="containerDownLeft" style="width:50%; height:300px;"></div>
+   <div class="show-msg"><?php echo $this->form ?></div>
   </td>
  </tr>
 </table>

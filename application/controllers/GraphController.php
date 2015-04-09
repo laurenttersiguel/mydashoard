@@ -3,23 +3,42 @@
 class GraphController extends Zend_Controller_Action
 {
     
-   public function preDispatch()
-	{
-		$auth = Zend_Auth::getInstance();
-        		if (!$auth->hasIdentity()) {
-        			$this->_redirect('/auth/login');
-        }
-        
-              $response = $this->getResponse();
-      $response->insert('sidebar', $this->view->render('sidebar.phtml'));  
-      date_default_timezone_set('UTC');
-
+    public function preDispatch()
+	  {
+    		$auth = Zend_Auth::getInstance();
+        if (!$auth->hasIdentity()) 
+          	$this->_redirect('/auth/login');
+        date_default_timezone_set('UTC');
     }
     
     public function indexAction()
     {
+    
         $dbobj = new Application_Model_DbTable_Report();
-        $this->view->items = $dbobj->getRequestAll();
+
+        $evc = $dbobj->getRequestDistinct();
+
+        foreach($evc as $item) {
+            $instanceItem=$item->server_name;
+            $abscisServer[]=$instanceItem;
+        }     
+
+        $form = new Application_Form_Instance();
+        $form->instanceName->setLabel('instanceName')->setMultiOptions($abscisServer)->setRequired(true)->addValidator('NotEmpty', true);
+        $this->view->form = $form;
+        $instance=null;
+        if ($this->getRequest()->isPost()) {
+              $formData = $this->getRequest()->getPost();
+              if ($form->isValid($formData)) {
+                    $evcitem = $form->getValue('instanceName');
+                    $instance=$abscisServer[$evcitem];
+              } else {
+                    $form->populate($formData);
+              }         
+        }
+        if ($instance!=null){    echo $instance;}
+    
+        $this->view->items = $dbobj->getRequestAll($instance);
     }
 
      public function putThisinjson()

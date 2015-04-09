@@ -27,8 +27,6 @@ class authController extends Zend_Controller_Action
                     $auth = Zend_Auth::getInstance();
                     $result = $auth->authenticate($adapter);
                     if ($result->isValid()) {
-//                      		$data = $authAdapter->getResultRowObject(null, 'password');
- //                     		$auth->getStorage()->write($data);
                       		$this->_redirect('/index');
                     }else{
                           echo 'connection refused';    
@@ -51,7 +49,5 @@ class authController extends Zend_Controller_Action
               }       
         }
     }
-
- 
 }
 

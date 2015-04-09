@@ -9,12 +9,13 @@ class MongoController extends Zend_Controller_Action
         if (!$auth->hasIdentity()) {
         	$this->_redirect('/auth/login');
         }
+        date_default_timezone_set('UTC');
       }
     
       public function indexAction()
       {
-        date_default_timezone_set('UTC');
-        $m = new MongoClient("localhost"); // connect 27017
+        $config = new Zend_Config_Ini('../application/configs/application.ini','production');
+        $m = new MongoClient($config->mongo->host); // connect 27017
         $db = $m->selectDB("analytics");
         $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
         
