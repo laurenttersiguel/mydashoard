@@ -26,7 +26,6 @@ class authController extends Zend_Controller_Action
                     if ($result->isValid()) {
                       		$this->_redirect('/index');
                     }else{
-                          echo 'connection refused';    
                           if ($log_path) {
                               $messages = $result->getMessages();
                               $logger = new Zend_Log();

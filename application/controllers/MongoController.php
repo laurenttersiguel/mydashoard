@@ -2,14 +2,11 @@
 
 class MongoController extends Zend_Controller_Action
 {
-    
-       public function preDispatch()
+      public function preDispatch()
       {
         $auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
+        if (!$auth->hasIdentity()) 
         	$this->_redirect('/auth/login');
-        }
-        date_default_timezone_set('UTC');
       }
     
       public function indexAction()
@@ -24,7 +21,6 @@ class MongoController extends Zend_Controller_Action
         $form = new Application_Form_Instance();
         $form->instanceName->setLabel('instanceName')->setMultiOptions($evc)->setRequired(true)->addValidator('NotEmpty', true);
         $this->view->form = $form;
-        $instance='blank';
         if ($this->getRequest()->isPost()) {
               $formData = $this->getRequest()->getPost();
               if ($form->isValid($formData)) {
@@ -32,11 +28,14 @@ class MongoController extends Zend_Controller_Action
                     $instance=$evc[$evcitem];
               } else {
                     $form->populate($formData);
+                    $instance=$evc[0];
               }         
+        }else{
+              $instance=$evc[0];
         }
-
+        $this->view->instance=$instance;
         $exp=array();
-        for ($i = 10; $i > 0; $i--) {
+        for ($i = 6; $i > 0; $i--) {
           $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1, 1,   date("Y"));
           $mongoinf = new Mongodate($lastmonthinf);
           $lastmonthsup = mktime(0, 0, 0, date("m")-$i, 1,   date("Y"));
@@ -44,20 +43,20 @@ class MongoController extends Zend_Controller_Action
           $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>1,'infos.instance'=>$instance,'infos.eventType' => 'read');
           $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $sum=0;
-          foreach ( $cursorptf as $id => $value ){
+          foreach ( $cursorptf as $id => $value )
               $sum += $value['hits'];
               $dateconv=date('Y-M', $lastmonthinf);
               $datesup=date('Y-M', $lastmonthsup);
-              /*echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';*/
+              echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';
               $exp[]=array($dateconv,$sum);
-              }
         }
         $this->view->items=json_encode($exp);
       }
           
       public function jsgetAction()
       {
-          $m = new MongoClient("localhost"); // connect 27017
+          $config = new Zend_Config_Ini('../application/configs/application.ini','production');
+          $m = new MongoClient($config->mongo->host); // connect 27017
           $db = $m->selectDB("analytics");
           $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
           $evc=$db->spaceagg->count();
@@ -70,7 +69,10 @@ class MongoController extends Zend_Controller_Action
           $nowd=strtotime($today);
           $mongosup = new Mongodate($nowd);
           
-          $query = array('date' => array('$gt'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'read');
+          $request = $this->getRequest()->getPost();
+          $instance = $request['message'];
+
+          $query = array('date' => array('$gt'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'like','infos.instance'=>$instance);
           $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $exp=array();
           foreach ( $cursorptf as $id => $value )
@@ -83,9 +85,11 @@ class MongoController extends Zend_Controller_Action
           $this->_helper->getHelper('layout')->disableLayout();
           echo json_encode($exp);
       }
-            public function jsgetbAction()
+      
+      public function jsgetpostAction()
       {
-          $m = new MongoClient("localhost"); // connect 27017
+          $config = new Zend_Config_Ini('../application/configs/application.ini','production');
+          $m = new MongoClient($config->mongo->host); // connect 27017
           $db = $m->selectDB("analytics");
           $db->setReadPreference(MongoClient::RP_SECONDARY_PREFERRED);
           $evc=$db->spaceagg->count();
@@ -98,7 +102,9 @@ class MongoController extends Zend_Controller_Action
           $nowd=strtotime($today);
           $mongosup = new Mongodate($nowd);
           
-          $query = array('date' => array('$gt'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'read');
+          $request = $this->getRequest()->getPost();
+          $instance = $request['message'];
+          $query = array('date' => array('$gt'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>0,'infos.eventType' => 'publish','infos.instance'=>$instance);
           $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
           $exp=array();
           foreach ( $cursorptf as $id => $value )

@@ -1,6 +1,4 @@
 <?php
-$this->title = 'Number of request / hour';
-$this->headTitle($this->title);
 foreach($this->items as $item) {
     $scriptItem=$this->escape($item->script_name);
     $instanceItem=$this->escape($item->server_name);
@@ -58,7 +56,7 @@ $(function () {
             }
         },  
         title: {
-            text: '<?php echo 'Live '.$abscisServer[0].' Activity (5 sec)' ?>'
+            text: '<?php echo 'Live '.$abscisServer[0].' Activity (WAIT 5 sec)' ?>'
         },
         xAxis: {
               type: 'datetime'
@@ -85,7 +83,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Top HTTP Request'
+            text: '<?php echo 'Request / hour '.$abscisServer[0] ?>'
         },
         xAxis: {
             type: 'category',

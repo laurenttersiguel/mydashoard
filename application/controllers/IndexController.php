@@ -12,7 +12,7 @@ class IndexController extends Zend_Controller_Action
     public function indexAction(){
           $auth = Zend_Auth::getInstance();
           $id= $auth->getIdentity();
-          echo 'user connected '.$id; 
+          $this->view->user_connected=$id; 
           $this->view->title = "Live Customer";
           $this->view->headTitle($this->view->title, 'PREPEND');
     }

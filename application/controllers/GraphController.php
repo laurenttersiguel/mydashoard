@@ -6,28 +6,24 @@ class GraphController extends Zend_Controller_Action
     public function preDispatch()
 	  {
     		$auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
+        if (!$auth->hasIdentity()) 
           	$this->_redirect('/auth/login');
-  }
     }
     
     public function indexAction()
     {
-            $this->view->title = "Live Customer";
-            $this->view->headTitle($this->view->title, 'PREPEND');
+        $this->view->title = "live customer usage";
+        $this->view->headTitle($this->view->title, 'PREPEND');
     
         $dbobj = new Application_Model_DbTable_Report();
         $evc = $dbobj->getRequestDistinct();
-
         foreach($evc as $item) {
             $instanceItem=$item->server_name;
             $abscisServer[]=$instanceItem;
         }     
-
         $form = new Application_Form_Instance();
         $form->instanceName->setLabel('instanceName')->setMultiOptions($abscisServer)->setRequired(true)->addValidator('NotEmpty', true);
         $this->view->form = $form;
-        $instance=null;
         if ($this->getRequest()->isPost()) {
               $formData = $this->getRequest()->getPost();
               if ($form->isValid($formData)) {
@@ -35,11 +31,11 @@ class GraphController extends Zend_Controller_Action
                     $instance=$abscisServer[$evcitem];
               } else {
                     $form->populate($formData);
+                    $instance=$abscisServer[0];
               }         
+        }else{
+              $instance=$abscisServer[0];
         }
-        if ($instance!=null)    
-              echo $instance;
-    
         $this->view->items = $dbobj->getRequestAll($instance);
     }
 

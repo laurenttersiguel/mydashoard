@@ -1,24 +1,25 @@
 <?php
-$this->title = "Mongo DB";
+$this->title = "Active Member Stats";
 $this->headTitle($this->title);
 ?>
-<table> 
- <tr>
-  <td>
-   <div id="containerUp"  style="width:50%; height:300px;"></div>
-  </td>
-  <td>
-   <div id="containerUpLeft"  style="width:100%; height:300px;"></div>
-  </td>
- </tr>
- <tr>
-  <td>
-   <div id="containerDown" style="width:50%; height:300px;"></div>
-  </td>
-  <td>
-   <div class="show-msg"><?php echo $this->form ?></div>
-  </td>
- </tr>
+<table>            
+  <tr>  <td>                        
+      <div>                                      
+      </div>   </td>       
+  </tr>     
+  <tr>  <td>                        
+      <div id="containerUp"  style="width:50%; height:300px;">                    
+      </div>  </td>  <td>                        
+      <div id="containerUpLeft"  style="width:50%; height:300px;">                    
+      </div>  </td>          
+  </tr>          
+  <tr>  <td>                        
+      <div id="containerDown" style="width:50%; height:300px;">                    
+      </div>  </td>  <td>     
+      <div id="containerDownLeft"  style="width:50%; height:300px;">          
+        <?php echo $this->form ?>    
+      </div>       </td>          
+  </tr>
 </table>
 <script>
 $(function () { 
@@ -27,10 +28,10 @@ $(function () {
             type: 'line'
         },
         title: {
-            text: 'Active Members'
+            text: '<?php echo $this->instance.' Active Members' ?>'
         },
         xAxis: {
-                          type: 'category',
+            type: 'category',
             labels: {
                 rotation: -60,
                 style: {
@@ -40,7 +41,6 @@ $(function () {
             }
         },
         yAxis: {    min:0
-
         },
         legend: {
         },
@@ -51,15 +51,14 @@ $(function () {
         ]
     });
 });
-
-function toto(datachart){
-  var datat=jQuery.parseJSON(datachart);
+function chartbis(datachart){
+  var datatab=jQuery.parseJSON(datachart);
 $('#containerDown').highcharts({
     chart: {
         type: 'line'
     },
     title: {
-        text: 'Publish activity'
+        text: '<?php echo $this->instance.' like activity'  ?>'
     },
     xAxis: {
     type: 'category'
@@ -69,28 +68,27 @@ $('#containerDown').highcharts({
     },
     series: [{
             name: 'requests',
-            data: datat
+            data: datatab
         }
         ]
 });         
 }
 $(document).ready(function(){
-    $.get('mongo/jsget',
+    $.post('mongo/jsget',
+           {'message' : '<?php echo $this->instance ?>'},
             function (data) {
-              toto(data);
+              chartbis(data);
           }
    );
-
 });
-
-function totob(datachart){
-  var datat=jQuery.parseJSON(datachart);
+function chartter(datachart){
+  var datatab=jQuery.parseJSON(datachart);
 $('#containerUpLeft').highcharts({
     chart: {
         type: 'line'
     },
     title: {
-        text: 'Publish activity'
+        text: '<?php echo $this->instance.' Publish activity' ?>'
     },
     xAxis: {
     type: 'category'
@@ -100,17 +98,17 @@ $('#containerUpLeft').highcharts({
     },
     series: [{
             name: 'requests',
-            data: datat
+            data: datatab
         }
         ]
 });         
 }
 $(document).ready(function(){
-    $.get('mongo/jsgetb',
+    $.post('mongo/jsgetpost',
+    {'message' : '<?php echo $this->instance ?>'},
             function (data) {
-              totob(data);
+              chartter(data);
           }
    );
-
 });
 </script>

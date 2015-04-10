@@ -33,8 +33,9 @@ class Application_Model_DbTable_Report extends Zend_Db_Table_Abstract
                   throw new Exception("executed script was not found in database");
               }
               $instance = $prerow->server_name;
-        }
               
+        }
+
         $select = $this->select()->where('script_name <> ?', $id)
                        ->where('server_name = ?', $instance)
                        ->order('req_count desc')
