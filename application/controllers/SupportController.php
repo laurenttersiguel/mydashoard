@@ -22,20 +22,17 @@ class SupportController extends Zend_Controller_Action
 
       public function indexAction()
     {///tickets/recent.json
-    $data=$this->curlWrap("/tickets/recent.json", null, "GET");
-    //print("Subject = " . $data->groups[0]->name );
-    //var_dump($data);
-    print("Subject = " . $data->tickets[0]->raw_subject.'<br/>');
-    print("Description = " . $data->tickets[0]->description.'<br/>');
-
-    echo '<br/>';
-
-    $data2=$this->curlWrap("/organizations.json", null, "GET");
-foreach ($data2->organizations as $key => $value){
-print($value->name.' ticket created '.$value->created_at.'<br/>');
-}
-
-
+        print('<table>');
+        print('<tr><td><h2>recent ticket</h2></td></tr>');
+        $data=$this->curlWrap("/tickets/recent.json", null, "GET");
+        foreach ($data->tickets as $key => $value)
+            print('<tr><td> Subject = '.$value->raw_subject.'</td><td> Description = '.$value->description.'</td></tr>');
+    
+        print('<tr><td><h2>organizations</h2></td></tr>');
+        $org=$this->curlWrap("/organizations.json", null, "GET");
+        foreach ($org->organizations as $key => $value)
+            print('<tr><td>'.$value->name.'</td><td> ticket created '.$value->created_at.'</td></tr>');
+        print('</table>');
     }
     
   public function curlWrap($url, $json, $action)

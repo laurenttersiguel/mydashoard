@@ -15,5 +15,13 @@ $this->headTitle($this->title);
 <br>
 <br>
 <br>
+<a href="<?php echo $this->url(array('controller'=>'issue','action'=>'index'));?>">Jira Issues</a>
+<br>
+<br>
+<br>
+<a href="<?php echo $this->url(array('controller'=>'support','action'=>'index'));?>">Zendesk Support</a>
+<br>
+<br>
+<br>
 <div><?php echo 'user connected from LDAP : '.$this->user_connected ?></div>
 </p>

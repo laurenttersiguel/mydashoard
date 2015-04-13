@@ -21,11 +21,12 @@ class IssueController extends Zend_Controller_Action
   
       public function indexAction()
     {
-    //curl -u lte:5jr8sV2u https://jira.devbk.net/api/v2/users/me.json
+          $data=$this->curlWrap("/project", null, "GET");
+          print('<table>');
+          foreach($data as $key => $value)
+              print('<tr><td>'.$value->key.'</td><td> name= '.$value->name.'</td></tr>');
+          print('</table>');
 
-
-    $data=$this->curlWrap("/project", null, "GET");
-    var_dump($data);
     }
     
   public function curlWrap($url, $json, $action)
@@ -62,7 +63,6 @@ class IssueController extends Zend_Controller_Action
   	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
   	$output = curl_exec($ch);
-    var_dump($output);
     echo 'Curl output: ' . curl_error($ch);
   	curl_close($ch);
   	$decoded = json_decode($output);
