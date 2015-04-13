@@ -3,7 +3,7 @@
 
 define("ZDAPIKEY", "5jr8sV2u");
 define("ZDUSER", "lte");
-define("ZDURL", "http://jira.devbk.net:8080/api/2");
+define("ZDURL", "https://jira.devbk.net/rest/api/2");
 
 /* Note: do not put a trailing slash at the end of v2 */
 
@@ -21,9 +21,11 @@ class IssueController extends Zend_Controller_Action
   
       public function indexAction()
     {
-    //$data=
-    $this->curlWrap("/search?jql=assignee=lte", null, "GET");
-    //print("First group = " . $data->groups[0]->name );
+    //curl -u lte:5jr8sV2u https://jira.devbk.net/api/v2/users/me.json
+
+
+    $data=$this->curlWrap("/project", null, "GET");
+    var_dump($data);
     }
     
   public function curlWrap($url, $json, $action)
