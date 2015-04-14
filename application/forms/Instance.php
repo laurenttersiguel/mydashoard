@@ -6,7 +6,7 @@ class Application_Form_Instance extends Zend_Form
     {
         $this->setName('Instance');
 
-        $instanceName = new Zend_Form_Element_Select('instanceName');
+        $instanceName = new Zend_Form_Element_Select('instanceSelect');
 
         $send = new Zend_Form_Element_Submit('send');
         $send->setAttrib('id', 'sendbutton')

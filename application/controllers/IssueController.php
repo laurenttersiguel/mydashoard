@@ -55,15 +55,11 @@ class IssueController extends Zend_Controller_Action
   			break;
   	}
 
-    curl_setopt($ch, CURLOPT_CAINFO, "C:\wamp\www\bkInternalDashboard\library\cacert.pem");
-  //curl -D- -u fred:fred -X GET -H "Content-Type: application/json" http://kelpie9:8081/rest/api/2/search?jql=assignee=fred
-  
   	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
   	curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
   	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   	curl_setopt($ch, CURLOPT_TIMEOUT, 10);
   	$output = curl_exec($ch);
-    echo 'Curl output: ' . curl_error($ch);
   	curl_close($ch);
   	$decoded = json_decode($output);
   	return $decoded;

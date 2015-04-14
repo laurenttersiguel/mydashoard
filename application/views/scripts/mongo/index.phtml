@@ -1,22 +1,32 @@
 <?php
-$this->title = "Active Member Stats";
+$this->title = "customer stats";
 $this->headTitle($this->title);
 ?>
-<table>            
-  <tr>  <td>                        
-      <div id="containerUp"  style="width:50%; height:300px;">                    
-      </div>  </td>  <td>                        
-      <div id="containerUpLeft"  style="width:50%; height:300px;">                    
-      </div>  </td>          
-  </tr>          
-  <tr>  <td>                        
-      <div id="containerDown" style="width:50%; height:300px;">                    
-      </div>  </td>  <td>     
-      <div id="containerDownLeft"  style="width:50%; height:300px;">          
-        <?php echo $this->form ?>    
-      </div>       </td>          
+<table>               
+<tr>
+  <?php echo $this->form ?>
+</tr>   
+<?php
+foreach($this->currentitems as $item ) 
+    echo '<tr><td>'.$item[0].'</td><td>'.$item[1].'</td></tr>';
+?>
+</table>               
+<table>               
+  <tr>  <td>                               
+      <div id="containerUp"  style="width:50%; height:300px;">                           
+      </div>  </td>  <td>                               
+      <div id="containerUpLeft"  style="width:50%; height:300px;">                           
+      </div>  </td>             
+  </tr>             
+  <tr>  <td>                               
+      <div id="containerDown" style="width:50%; height:300px;">                           
+      </div>  </td>  <td>            
+      <div>                           
+</div>
+       </td>             
   </tr>
 </table>
+
 <script>
 $(function () { 
     $('#containerUp').highcharts({

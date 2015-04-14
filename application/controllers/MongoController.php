@@ -19,12 +19,12 @@ class MongoController extends Zend_Controller_Action
         $timemong= new Mongodate(strtotime(date('d.m.Y')));
         $evc=$db->platformagg->distinct('infos.instance',array('date' => $timemong));
         $form = new Application_Form_Instance();
-        $form->instanceName->setLabel('instanceName')->setMultiOptions($evc)->setRequired(true)->addValidator('NotEmpty', true);
+        $form->instanceSelect->setLabel('choose instance')->setMultiOptions($evc)->setRequired(true)->addValidator('NotEmpty', true);
         $this->view->form = $form;
         if ($this->getRequest()->isPost()) {
               $formData = $this->getRequest()->getPost();
               if ($form->isValid($formData)) {
-                    $evcitem = $form->getValue('instanceName');
+                    $evcitem = $form->getValue('instanceSelect');
                     $instance=$evc[$evcitem];
               } else {
                     $form->populate($formData);
@@ -34,25 +34,85 @@ class MongoController extends Zend_Controller_Action
               $instance=$evc[0];
         }
         $this->view->instance=$instance;
-        $exp=array();
-        for ($i = 6; $i > 0; $i--) {
-          $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1, 1,   date("Y"));
+        
+          $currentmonthinf = new Mongodate(mktime(0, 0, 0, date("m")-1, 1,date("Y")));
+          $currentmonthsup = new Mongodate(mktime(0, 0, 0, date("m"), 1,date("Y")));
+          $currentexp=array();
+          foreach ( $evc as $id => $value ) {
+              $currentquery = array('date' => array('$gte'=>$currentmonthinf,'$lt'=>$currentmonthsup),
+                  'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$value,'infos.eventType' => 'read');
+              $currentcursorptf = $db->platformagg->count($currentquery);
+              $currentexp[]=array($value,$currentcursorptf);
+          }
+        $this->view->currentitems=$currentexp;
+          
+        for ($i = 99; $i >= 0; $i--) {
+          $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1,1,date("Y"));
           $mongoinf = new Mongodate($lastmonthinf);
-          $lastmonthsup = mktime(0, 0, 0, date("m")-$i, 1,   date("Y"));
+          $lastmonthsup = mktime(0, 0, 0, date("m")-$i,1,date("Y"));
           $mongosup = new Mongodate($lastmonthsup);
-          $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),'infos.privacy'=>1,'infos.instance'=>$instance,'infos.eventType' => 'read');
-          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits'))->sort(array('date'))->limit(100);
+          $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),
+                        'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$instance,'infos.eventType' => 'read');
+          //'infos.privacy'=>1,
+          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits','infos.sourceValue'))->sort(array('date'))->limit(100);
+
+          $cursorgrp=$db->platformagg->group(
+                          array('infos.sourceValue'=>true),
+                          array('count' => 0),
+                          "function (obj, prev) { prev.count++; }",
+                          array('condition'=>$query)
+                          );
+                          
+/*
+$m = new Mongo();
+$db = $m->selectDB('test');
+$collection = new MongoCollection($db, 'FooBar');
+// grouping results by categories, where foo is 'bar'
+$keys = array('categorie'=>true, 'foo'=>true); // the fields list we want to return
+$initial = array('count' => 0); // gets a subtotal for each categorie
+$reduce = "function(obj,prev) { prev.count += 1; }"; // yes, this is js code
+$conditions = array('foo'=> 'bar');
+$grouped = $myColl::group($keys, $initial, $reduce, array('condition'=>$conditions));
+$result = $grouped['retval'];
+
+*/                          
+
           $sum=0;
-          foreach ( $cursorptf as $id => $value )
-              $sum += $value['hits'];
+          foreach ( $cursorptf as $id => $value ) $sum ++;
+              //= $value['hits'];
               $dateconv=date('Y-M', $lastmonthinf);
               $datesup=date('Y-M', $lastmonthsup);
-              echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';
+//              echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';
               $exp[]=array($dateconv,$sum);
         }
         $this->view->items=json_encode($exp);
       }
-          
+        
+        
+/*        scala code
+coll.aggregate(
+$match(MongoDBObject("infos.instance"  -> ctx.instanceId,
+                    "infos.eventType" -> ctx.eventType,
+                    // Some "views" are made by connectors with sourceValue=0. Must not counted
+                    "infos.sourceValue" -> MongoDBObject("$ne" -> 0))
+                ++( "date" $gte startOfDay(ctx.startDate))),
+$group(MongoDBObject("year"  -> MongoDBObject("$year"       -> "$date"),
+                    "month" -> MongoDBObject("$month"      -> "$date"),
+                    "user"  -> "$infos.sourceValue"),
+ // Summing on the number of days where user has had at least a hit
+ // Warning: do not sum on "$hits". We do not want the total hit count on the month
+ $sum),
+$match(MongoDBObject("count" -> MongoDBObject("$gte" -> ctx.licenseValue))),
+$group(MongoDBObject("year" -> "$_id.year","month" -> "$_id.month"),$sum)
+)
+/**/          
+/*
+db.website.aggregate(
+    { 
+	$group : {_id : "$hosting", total : { $sum : 1 }}
+    }
+  );
+*/
       public function jsgetAction()
       {
           $config = new Zend_Config_Ini('../application/configs/application.ini','production');

@@ -22,12 +22,12 @@ class GraphController extends Zend_Controller_Action
             $abscisServer[]=$instanceItem;
         }     
         $form = new Application_Form_Instance();
-        $form->instanceName->setLabel('instanceName')->setMultiOptions($abscisServer)->setRequired(true)->addValidator('NotEmpty', true);
+        $form->instanceSelect->setLabel('choose instance')->setMultiOptions($abscisServer)->setRequired(true)->addValidator('NotEmpty', true);
         $this->view->form = $form;
         if ($this->getRequest()->isPost()) {
               $formData = $this->getRequest()->getPost();
               if ($form->isValid($formData)) {
-                    $evcitem = $form->getValue('instanceName');
+                    $evcitem = $form->getValue('instanceSelect');
                     $instance=$abscisServer[$evcitem];
               } else {
                     $form->populate($formData);
