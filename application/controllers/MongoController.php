@@ -45,6 +45,7 @@ class MongoController extends Zend_Controller_Action
               $currentexp[]=array($value,$currentcursorptf);
           }
         $this->view->currentitems=$currentexp;
+
           
         for ($i = 99; $i >= 0; $i--) {
           $lastmonthinf = mktime(0, 0, 0, date("m")-$i-1,1,date("Y"));
@@ -54,31 +55,30 @@ class MongoController extends Zend_Controller_Action
           $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),
                         'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$instance,'infos.eventType' => 'read');
           //'infos.privacy'=>1,
-          $cursorptf = $db->platformagg->find($query,array('date','infos.eventType','hits','infos.sourceValue'))->sort(array('date'))->limit(100);
+          $sum = $db->platformagg->count($query,array('date','infos.eventType','hits','infos.sourceValue'));
+//          ->sort(array('date'))->limit(100);
 
-          $cursorgrp=$db->platformagg->group(
-                          array('infos.sourceValue'=>true),
-                          array('count' => 0),
-                          "function (obj, prev) { prev.count++; }",
-                          array('condition'=>$query)
-                          );
-                          
-/*
-$m = new Mongo();
-$db = $m->selectDB('test');
-$collection = new MongoCollection($db, 'FooBar');
+//          $cursorgrp=$db->platformagg->group(
+//                          array('infos.sourceValue'=>true),
+//                          array('count' => 0),
+//                          "function (obj, prev) { prev.count++; }",
+//                          array('condition'=>$query)
+//                          );
+//var_dump($cursorgrp);                          
+//echo $cursorgrp['count'].'<br/>';
+//$m = new Mongo();
+//$db = $m->selectDB('test');
+//$collection = new MongoCollection($db, 'FooBar');
 // grouping results by categories, where foo is 'bar'
-$keys = array('categorie'=>true, 'foo'=>true); // the fields list we want to return
-$initial = array('count' => 0); // gets a subtotal for each categorie
-$reduce = "function(obj,prev) { prev.count += 1; }"; // yes, this is js code
-$conditions = array('foo'=> 'bar');
-$grouped = $myColl::group($keys, $initial, $reduce, array('condition'=>$conditions));
-$result = $grouped['retval'];
-
-*/                          
-
-          $sum=0;
-          foreach ( $cursorptf as $id => $value ) $sum ++;
+//$keys = array('categorie'=>true, 'foo'=>true); // the fields list we want to return
+//$initial = array('count' => 0); // gets a subtotal for each categorie
+//$reduce = "function(obj,prev) { prev.count += 1; }"; // yes, this is js code
+//$conditions = array('foo'=> 'bar');
+//$grouped = $myColl::group($keys, $initial, $reduce, array('condition'=>$conditions));
+//$result = $grouped['retval'];
+                          
+//          $sum=0;
+//          foreach ( $cursorptf as $id => $value ) $sum ++;
               //= $value['hits'];
               $dateconv=date('Y-M', $lastmonthinf);
               $datesup=date('Y-M', $lastmonthsup);
@@ -89,30 +89,23 @@ $result = $grouped['retval'];
       }
         
         
-/*        scala code
-coll.aggregate(
-$match(MongoDBObject("infos.instance"  -> ctx.instanceId,
-                    "infos.eventType" -> ctx.eventType,
-                    // Some "views" are made by connectors with sourceValue=0. Must not counted
-                    "infos.sourceValue" -> MongoDBObject("$ne" -> 0))
-                ++( "date" $gte startOfDay(ctx.startDate))),
-$group(MongoDBObject("year"  -> MongoDBObject("$year"       -> "$date"),
-                    "month" -> MongoDBObject("$month"      -> "$date"),
-                    "user"  -> "$infos.sourceValue"),
- // Summing on the number of days where user has had at least a hit
- // Warning: do not sum on "$hits". We do not want the total hit count on the month
- $sum),
-$match(MongoDBObject("count" -> MongoDBObject("$gte" -> ctx.licenseValue))),
-$group(MongoDBObject("year" -> "$_id.year","month" -> "$_id.month"),$sum)
-)
-/**/          
-/*
-db.website.aggregate(
-    { 
-	$group : {_id : "$hosting", total : { $sum : 1 }}
-    }
-  );
-*/
+//       scala code
+//coll.aggregate(
+//$match(MongoDBObject("infos.instance"  -> ctx.instanceId,
+//                    "infos.eventType" -> ctx.eventType,
+//                    // Some "views" are made by connectors with sourceValue=0. Must not counted
+//                    "infos.sourceValue" -> MongoDBObject("$ne" -> 0))
+//                ++( "date" $gte startOfDay(ctx.startDate))),
+//$group(MongoDBObject("year"  -> MongoDBObject("$year"       -> "$date"),
+//                    "month" -> MongoDBObject("$month"      -> "$date"),
+//                    "user"  -> "$infos.sourceValue"),
+// // Summing on the number of days where user has had at least a hit
+// // Warning: do not sum on "$hits". We do not want the total hit count on the month
+// $sum),
+//$match(MongoDBObject("count" -> MongoDBObject("$gte" -> ctx.licenseValue))),
+//$group(MongoDBObject("year" -> "$_id.year","month" -> "$_id.month"),$sum)
+//)
+
       public function jsgetAction()
       {
           $config = new Zend_Config_Ini('../application/configs/application.ini','production');

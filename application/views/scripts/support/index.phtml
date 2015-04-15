@@ -1,5 +1,32 @@
 <?php
 $this->title = "Zendesk page";
 $this->headTitle($this->title);
-echo $this->form;
+var_dump($this->solved);
 ?>
+<table>
+  <tr><td><h2>all tickets</h2></td>
+  </tr>
+  <tr>
+    <div id="container" style="width:50%; height:300px;">
+    </div>
+  </tr>
+  <tr><td><h2>recent ticket</h2></td>
+  </tr>
+</table>
+<script>
+$(function () {
+    $('#container').highcharts({
+            chart: {
+            type: 'line'
+        },
+        xAxis: {
+            type: 'category'
+            },
+      series: [
+      {data: <?php echo $this->open; ?>},
+      {data: <?php echo $this->solved; ?>},
+      {data: <?php echo $this->pending; ?>}
+      ]
+  });
+});
+</script>
