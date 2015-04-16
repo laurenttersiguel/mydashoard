@@ -2,3 +2,35 @@
 $this->title = "Jira page";
 $this->headTitle($this->title);
 ?>
+<div style="margin-left:170px;">
+<table>
+  <tr><h2>all tickets</h2>
+  </tr>
+  <tr>
+    <div id="container" style="width:50%; height:300px;">
+    </div>
+</table>
+</div>
+<script>
+$(function () {
+    $('#container').highcharts({
+            chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Tickets Number'
+        },
+        xAxis: {
+            type: 'category'
+            },
+        yAxis: {
+            min: 0
+            },
+      series: [
+      {name : 'open', data: <?php echo $this->open; ?>},
+      {name : 'resolved', data: <?php echo $this->resolved; ?>},
+      {name : 'closed', data: <?php echo $this->closed; ?>}
+      ]
+  });
+});
+</script>

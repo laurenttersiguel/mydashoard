@@ -1,12 +1,8 @@
 <?php
 
-
 define("ZDAPIKEY", "HWT4vmi2YmxsYGoV1Jy00AhSYxSt9m29ythEyO5Y");
 define("ZDUSER", "laurent.tersiguel@atos.net");
 define("ZDURL", "https://support.bluekiwi.net/api/v2");
-
-/* Note: do not put a trailing slash at the end of v2 */
-
 
 class SupportController extends Zend_Controller_Action
 {
@@ -18,44 +14,53 @@ class SupportController extends Zend_Controller_Action
     
     public function indexAction()
     {
-        $datecomp=date("Y-m-d",mktime(0, 0, 0, date("m"), date("d"),date("Y")-1));
-        $open=$this->curlWrap('/search.json?query=status:open,created>'.$datecomp, null, "GET");
-        $solved=$this->curlWrap('/search.json?query=status:solved,created>'.$datecomp, null, "GET");
-        $pending=$this->curlWrap('/search.json?query=status:pending,created>'.$datecomp, null, "GET");
-        function sortFunction( $a, $b ) {
-            return strtotime($a->created_at) - strtotime($b->created_at);
-        }
-        usort($pending->results, "sortFunction");
-        $i=0;
-        foreach ($pending->results as $key => $item){
-            $i++;
-            $itc=$item->created_at;
-            $itcd=date("d.m.Y", strtotime($itc));
-            $mytabp[]=array($itcd,$i);
+
+  //      function sortFunction( $a, $b ) {
+   //         return strtotime($a->created_at) - strtotime($b->created_at);
+    //    }
+
+        for ($i = 10; $i >= 0; $i--) {
+                    $dinf = date("Y-m-d",mktime(0, 0, 0, date("m")-$i-1,1,date("Y")));
+                    $dsup = date("Y-m-d",mktime(0, 0, 0, date("m")-$i,1,date("Y")));
+                  $open=$this->curlWrap('/search.json?query=status:open,created>'.$dinf.',created<'.$dsup, null, "GET");
+                  $solved=$this->curlWrap('/search.json?query=status:solved,created>'.$dinf.',created<'.$dsup, null, "GET");
+                  $pending=$this->curlWrap('/search.json?query=status:pending,created>'.$dinf.',created<'.$dsup, null, "GET");
+          //        usort($pending->results, "sortFunction");
+                  $k=0;
+//TO SUBSTITUTE                echo $pending->count
+//TO SUBSTITUTE                echo $pending->results[0]->status
+
+                  foreach ($pending->results as $key => $item){
+                      $k++;
+                      $itc=$item->created_at;
+                      $itcd=date("d.m.Y", strtotime($itc));
+                  }
+                   $mytabp[]=array($dinf,$k);
+
+          //        usort($open->results, "sortFunction");
+                  $k=0;
+                  foreach ($open->results as $key => $item){
+                      $k++;
+                      $itc=$item->created_at;
+                      $itcd=date("d.m.Y", strtotime($itc));
+                  }
+                  $mytabo[]=array($dinf,$k);
+
+          //        usort($solved->results, "sortFunction");
+                  $k=0;
+                  foreach ($solved->results as $key => $item){
+                      $k++;
+                      $itc=$item->created_at;
+                      $itcd=date("d.m.Y", strtotime($itc));
+                  }
+                  $mytabs[]=array($dinf,$k);
+
         }
         $this->view->pending=json_encode($mytabp);
-
-        usort($open->results, "sortFunction");
-        $i=0;
-        foreach ($open->results as $key => $item){
-            $i++;
-            $itc=$item->created_at;
-            $itcd=date("d.m.Y", strtotime($itc));
-            $mytabo[]=array($itcd,$i);
-        }
         $this->view->open=json_encode($mytabo);
-
-        usort($solved->results, "sortFunction");
-        $i=0;
-        foreach ($solved->results as $key => $item){
-            $i++;
-            $itc=$item->created_at;
-            $itcd=date("d.m.Y", strtotime($itc));
-            $mytabs[]=array($itcd,$i);
-        }
         $this->view->solved=json_encode($mytabs);
 
-    }
+}
 /*        $di=$this->curlWrap('/incremental/tickets.json?start_time='.mktime(0, 0, 0, date("m"), 1,date("Y")), null, "GET");
         $i=0;
         foreach ($di->tickets as $key => $item){
@@ -105,8 +110,10 @@ class SupportController extends Zend_Controller_Action
   			break;
   	}
 
-    curl_setopt($ch, CURLOPT_CAINFO, "C:\wamp\www\bkInternalDashboard\library\cacert.pem");
-  
+    $config = new Zend_Config_Ini('../application/configs/application.ini','production');
+    $certif_path = $config->certif->file_path;
+    curl_setopt($ch, CURLOPT_CAINFO, $certif_path);
+
   	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
   	curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
   	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
