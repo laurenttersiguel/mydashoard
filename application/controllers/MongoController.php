@@ -35,15 +35,14 @@ class MongoController extends Zend_Controller_Action
         }
         $this->view->instance=$instance;
         
-          $currentmonthinf = new Mongodate(mktime(0, 0, 0, date("m")-1, 1,date("Y")));
-          $currentmonthsup = new Mongodate(mktime(0, 0, 0, date("m"), 1,date("Y")));
-          $currentexp=array();
-          foreach ( $evc as $id => $value ) {
-              $currentquery = array('date' => array('$gte'=>$currentmonthinf,'$lt'=>$currentmonthsup),
-                  'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$value,'infos.eventType' => 'read');
-              $currentcursorptf = $db->platformagg->count($currentquery);
-              $currentexp[]=array($value,$currentcursorptf);
-          }
+        $currentmonthinf = new Mongodate(mktime(0, 0, 0, date("m")-1, 1,date("Y")));
+        $currentmonthsup = new Mongodate(mktime(0, 0, 0, date("m"), 1,date("Y")));
+        foreach ( $evc as $id => $value ) {
+            $currentquery = array('date' => array('$gte'=>$currentmonthinf,'$lt'=>$currentmonthsup),
+                'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$value,'infos.eventType' => 'read');
+            $currentcursorptf = $db->platformagg->count($currentquery);
+            $currentexp[]=array($value,$currentcursorptf);
+        }
         $this->view->currentitems=$currentexp;
 
           
@@ -55,17 +54,32 @@ class MongoController extends Zend_Controller_Action
           $query = array('date' => array('$gte'=>$mongoinf,'$lt'=>$mongosup),
                         'infos.sourceValue'=>array('$ne'=>0),'infos.instance'=>$instance,'infos.eventType' => 'read');
           //'infos.privacy'=>1,
-          $sum = $db->platformagg->count($query,array('date','infos.eventType','hits','infos.sourceValue'));
-//          ->sort(array('date'))->limit(100);
 
+//PREVIOUSLY
+//          $extract = $db->useragg->find($query,array('date','infos.eventType','hits','infos.sourceValue'))->sort(array('date'))->limit(100);
+//          foreach ( $extract as $id => $value )
+//              echo $value['infos']['sourceValue'].'<br/>';
+
+          $sum = $db->platformagg->count($query,array('date','infos.eventType','hits','infos.sourceValue'));
+
+          $dateconv=date('Y-M', $lastmonthinf);
+          $datesup=date('Y-M', $lastmonthsup);
+//        echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';
+          $exp[]=array($dateconv,$sum);
+        }
+        $this->view->items=json_encode($exp);
+      }
+
+//GROUP BY SOLUTION
 //          $cursorgrp=$db->platformagg->group(
 //                          array('infos.sourceValue'=>true),
 //                          array('count' => 0),
 //                          "function (obj, prev) { prev.count++; }",
 //                          array('condition'=>$query)
 //                          );
-//var_dump($cursorgrp);                          
 //echo $cursorgrp['count'].'<br/>';
+//
+// CODE EXAMPLE
 //$m = new Mongo();
 //$db = $m->selectDB('test');
 //$collection = new MongoCollection($db, 'FooBar');
@@ -77,16 +91,6 @@ class MongoController extends Zend_Controller_Action
 //$grouped = $myColl::group($keys, $initial, $reduce, array('condition'=>$conditions));
 //$result = $grouped['retval'];
                           
-//          $sum=0;
-//          foreach ( $cursorptf as $id => $value ) $sum ++;
-              //= $value['hits'];
-              $dateconv=date('Y-M', $lastmonthinf);
-              $datesup=date('Y-M', $lastmonthsup);
-//              echo 'between '.$dateconv.' and '.$datesup.' summ is '.$sum.'<br/>';
-              $exp[]=array($dateconv,$sum);
-        }
-        $this->view->items=json_encode($exp);
-      }
         
         
 //       scala code

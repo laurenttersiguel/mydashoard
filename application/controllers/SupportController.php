@@ -31,9 +31,9 @@ class SupportController extends Zend_Controller_Action
             $i++;
             $itc=$item->created_at;
             $itcd=date("d.m.Y", strtotime($itc));
-            $mytab[]=array($itcd,$i);
+            $mytabp[]=array($itcd,$i);
         }
-        $this->view->pending=json_encode($mytab);
+        $this->view->pending=json_encode($mytabp);
 
         usort($open->results, "sortFunction");
         $i=0;

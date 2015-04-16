@@ -2,35 +2,38 @@
 $this->title = "customer stats";
 $this->headTitle($this->title);
 ?>
-<table>               
-<tr><td>
-  <?php echo $this->form ?></td>
-  <td>
+<div  style="float:left; width :150px; ">
+  <table>
+    <tr>
+      <?php echo $this->form.'<br/>'; ?>
+    </tr>
+    <tr>
 <?php
-foreach($this->currentitems as $item ) 
+echo 'Instance Active_Mbr'.'<br/>';
+foreach($this->currentitems as $item )
     echo $item[0].' '.$item[1].'<br/>';
-?>
-</td>
-</tr>   
-</table>               
-<table>               
-  <tr>  <td>                               
-      <div id="containerUp"  style="width:50%; height:300px;">                           
-      </div>  </td>  <td>                               
-      <div id="containerUpLeft"  style="width:50%; height:300px;">                           
-      </div>  </td>             
-  </tr>             
-  <tr>  <td>                               
-      <div id="containerDown" style="width:50%; height:300px;">                           
-      </div>  </td>  <td>            
-      <div>                           
+             ?>
+    </tr>
+  </table>
 </div>
-       </td>             
-  </tr>
-</table>
-
+<div style="margin-left:170px;">
+  <table>
+    <tr>  <td>
+        <div id="containerUp"  style="width:40%; height:300px;">
+        </div>  </td>  <td>
+        <div id="containerUpLeft"  style="width:40%; height:300px;">
+        </div>  </td>
+    </tr>
+    <tr>  <td>
+        <div id="containerDown" style="width:40%; height:300px;">
+        </div>  </td>  <td>
+        <div id="containerDownLeft"  style="width:40%; height:300px;">
+        </div>       </td>
+    </tr>
+  </table>
+</div>
 <script>
-$(function () { 
+$(function () {
     $('#containerUp').highcharts({
         chart: {
             type: 'line'
@@ -54,14 +57,14 @@ $(function () {
         },
         series: [{
             name: 'requests',
-            data: <?php echo $this->items ?> 
+            data: <?php echo $this->items ?>
         }
         ]
     });
 });
 function chartbis(datachart){
   var datatab=jQuery.parseJSON(datachart);
-$('#containerDown').highcharts({
+$('#containerDownLeft').highcharts({
     chart: {
         type: 'line'
     },
@@ -79,7 +82,7 @@ $('#containerDown').highcharts({
             data: datatab
         }
         ]
-});         
+});
 }
 $(document).ready(function(){
     $.post('mongo/jsget',
@@ -109,7 +112,7 @@ $('#containerUpLeft').highcharts({
             data: datatab
         }
         ]
-});         
+});
 }
 $(document).ready(function(){
     $.post('mongo/jsgetpost',

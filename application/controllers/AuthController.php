@@ -1,13 +1,11 @@
 <?php
-
 class authController extends Zend_Controller_Action
 {
     public function init()
     {
     }
- 
-   public function loginAction()
-    { 
+    public function loginAction()
+    {
        $form = new Application_Form_Auth();
        $form->send->setLabel('Authenticate');
        $this->view->form = $form;
@@ -24,26 +22,29 @@ class authController extends Zend_Controller_Action
                     $auth = Zend_Auth::getInstance();
                     $result = $auth->authenticate($adapter);
                     if ($result->isValid()) {
-                      		$this->_redirect('/index');
+                            $this->_redirect('/index');
                     }else{
-                          if ($log_path) {
-                              $messages = $result->getMessages();
-                              $logger = new Zend_Log();
-                              $logger->addWriter(new Zend_Log_Writer_Stream($log_path));
-                              $filter = new Zend_Log_Filter_Priority(Zend_Log::DEBUG);
-                              $logger->addFilter($filter);
-                              foreach ($messages as $i => $message) {
-                                  if ($i-- > 1) {
-                                      $message = str_replace("\n", "\n  ", $message);
-                                      $logger->log("Ldap: $i: $message", Zend_Log::DEBUG);
-                                  }
-                              }
-                          }
+                            if ($log_path) {
+                                    $messages = $result->getMessages();
+                                    print_r($messages[0]);
+                            }
                     }
-              } else {
+            }
+            else {
                     $form->populate($formData);
-              }       
-        }
+            }
+      }
     }
 }
 
+//Update an existing entry on the LDAP
+
+////$options = array(/* ... */);
+//$ldap = new Zend\Ldap\Ldap($options);
+//$ldap->bind();
+//$hm = $ldap->getEntry('cn=Hugo Müller,ou=People,dc=my,dc=local');
+//Zend\Ldap\Attribute::setAttribute($hm, 'mail', 'mueller@my.local');
+//Zend\Ldap\Attribute::setPassword($hm,
+//                                 'newPa$$w0rd',
+//                                 Zend\Ldap\Attribute::PASSWORD_HASH_SHA1);
+//$ldap->update('cn=Hugo Müller,ou=People,dc=my,dc=local', $hm);

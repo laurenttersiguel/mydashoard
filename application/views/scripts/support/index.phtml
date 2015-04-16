@@ -1,16 +1,15 @@
 <?php
 $this->title = "Zendesk page";
 $this->headTitle($this->title);
-var_dump($this->solved);
 ?>
 <table>
-  <tr><td><h2>all tickets</h2></td>
+  <tr><h2>all tickets</h2>
   </tr>
   <tr>
     <div id="container" style="width:50%; height:300px;">
     </div>
   </tr>
-  <tr><td><h2>recent ticket</h2></td>
+  <tr><h2>recent ticket</h2>
   </tr>
 </table>
 <script>
@@ -19,13 +18,19 @@ $(function () {
             chart: {
             type: 'line'
         },
+        title: {
+            text: 'Tickets Number'
+        },
         xAxis: {
             type: 'category'
             },
+        yAxis: {
+            min: 0
+            },
       series: [
-      {data: <?php echo $this->open; ?>},
-      {data: <?php echo $this->solved; ?>},
-      {data: <?php echo $this->pending; ?>}
+      {name : 'open', data: <?php echo $this->open; ?>},
+      {name : 'solved', data: <?php echo $this->solved; ?>},
+      {name : 'pending', data: <?php echo $this->pending; ?>}
       ]
   });
 });
