@@ -60,7 +60,7 @@ class MongoController extends Zend_Controller_Action
 //          foreach ( $extract as $id => $value )
 //              echo $value['infos']['sourceValue'].'<br/>';
 
-          $sum = $db->platformagg->count($query,array('date','infos.eventType','hits','infos.sourceValue'));
+          $sum = $db->platformagg->count($query);
 
           $dateconv=date('Y-M', $lastmonthinf);
           $datesup=date('Y-M', $lastmonthsup);
