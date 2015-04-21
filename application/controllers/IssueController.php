@@ -5,14 +5,12 @@ define("ZDURL", "http://jira.devbk.net/rest/api/2");
 
 class IssueController extends Zend_Controller_Action
 {
-
     public function preDispatch()
 	  {
     		$auth = Zend_Auth::getInstance();
         if (!$auth->hasIdentity())
           	$this->_redirect('/auth/login');
     }
-
 
 /*
 header("Content-Type: application/json");
@@ -23,6 +21,13 @@ echo shell_exec("curl -k --user display-user:display-pwd \"$url\"");
 */
     public function indexAction()
     {
+/*
+        $auth = Zend_Auth::getInstance();
+        $auth->setStorage(new MyStock());
+        $auth->getStorage()->read();
+        $temp= $auth->getIdentity();
+        var_dump($temp);
+*/
         for ($i = 10; $i >= 0; $i--) {
           $dinf = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i-1,date("Y")));
           $dsup = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i,date("Y")));
@@ -36,43 +41,50 @@ echo shell_exec("curl -k --user display-user:display-pwd \"$url\"");
           $dataopen=$this->curlWrap($open, null, "GET");
 //          $dataresolved=$this->curlWrap($resolved, null, "GET");
 //          $dataclosed=$this->curlWrap($closed, null, "GET");
-
+          
           $opennb=0;
           $closednb=0;
           $resolvednb=0;
+          if($dataopen->total>0){
+              foreach ($dataopen->issues as $issue){
+              //   echo $issue->fields->status->name;
+                  if($issue->fields->status->name == 'Open' ) $opennb++;
+                  if($issue->fields->status->name == 'Closed' ) $closednb++;
+                  if($issue->fields->status->name == 'Resolved' ) $resolvednb++;
+              }
 
-          foreach ($dataopen->issues as $issue){
-              if($dataopen->issues[0]->fields->status->name == 'Open' ) $opennb++;
-              if($dataopen->issues[0]->fields->status->name == 'Closed' ) $closednb++;
-              if($dataopen->issues[0]->fields->status->name == 'Resolved' ) $resolvednb++;
           }
-
           $tabopen[]=array($dinf,$opennb);
           $tabresolved[]=array($dinf,$closednb);
           $tabclosed[]=array($dinf,$resolvednb);
+          $this->view->open=json_encode($tabopen);
+          $this->view->resolved=json_encode($tabresolved);
+          $this->view->closed=json_encode($tabclosed);
 
-                  //              if ($dataopen->total==21) {
-                                //print_r($dataopen);
-                                //var_dump($dataopen);
-                                var_dump($dataopen->issues[0]->fields->status->name);
-                                var_dump($dataopen->issues[1]->fields->status->name);
-                                var_dump($dataopen->issues[2]->fields->status->name);
-                                var_dump($dataopen->issues[3]->fields->status->name);
-                                var_dump($dataopen->issues[4]->fields->status->name);
-                    //            }
+          $p0=0;
+          $p1=0;
+          $p2=0;
+          if($dataopen->total>0){
+              foreach ($dataopen->issues as $issue){
+              //   echo $issue->fields->status->name;
+                  if($issue->fields->priority->name == 'P0' ) $p0++;
+                  if($issue->fields->priority->name == 'P1' ) $p1++;
+                  if($issue->fields->priority->name == 'P2' ) $p2++;
+              }
+          }
+          $tabp0[]=array($dinf,$p0);
+          $tabp1[]=array($dinf,$p1);
+          $tabp2[]=array($dinf,$p2);
+          $this->view->p0=json_encode($tabp0);
+          $this->view->p1=json_encode($tabp1);
+          $this->view->p2=json_encode($tabp2);
 
+       }
 
-         }
-
-        $this->view->open=json_encode($tabopen);
-        $this->view->resolved=json_encode($tabresolved);
-        $this->view->closed=json_encode($tabclosed);
-
-        $data=$this->curlWrap("/project", null, "GET");
-        print('<div  style="float:left; width:150px; "><table>');
-        foreach($data as $key => $value)
-            print('<tr><td>'.$value->key.'</td><td> name= '.$value->name.'</td></tr>');
-        print('</table></div>');
+      $data=$this->curlWrap("/project", null, "GET");
+      foreach($data as $key => $value)
+                $projecttab[]=array($value->key,$value->name);
+      $this->view->currentitems=$projecttab;
 
     }
 

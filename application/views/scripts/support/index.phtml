@@ -3,13 +3,11 @@ $this->title = "Zendesk page";
 $this->headTitle($this->title);
 ?>
 <table>
-  <tr><h2>all tickets</h2>
+  <tr>
+    <div id="container" style="width:50%; height:300px;"/>
   </tr>
   <tr>
-    <div id="container" style="width:50%; height:300px;">
-    </div>
-  </tr>
-  <tr><h2>recent ticket</h2>
+      <div id="container2" style="width:50%; height:300px;"/>
   </tr>
 </table>
 <script>
@@ -19,7 +17,7 @@ $(function () {
             type: 'line'
         },
         title: {
-            text: 'Tickets Number'
+            text: 'Ticket status by creation date'
         },
         xAxis: {
             type: 'category'
@@ -31,6 +29,27 @@ $(function () {
       {name : 'open', data: <?php echo $this->open; ?>},
       {name : 'solved', data: <?php echo $this->solved; ?>},
       {name : 'pending', data: <?php echo $this->pending; ?>}
+      ]
+  });
+});
+$(function () {
+    $('#container2').highcharts({
+            chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Ticket priority by creation date'
+        },
+        xAxis: {
+            type: 'category'
+            },
+        yAxis: {
+            min: 0
+            },
+      series: [
+      {name : 'urgent', data: <?php echo $this->urgent; ?>},
+      {name : 'high', data: <?php echo $this->high; ?>},
+      {name : 'normal', data: <?php echo $this->normal; ?>}
       ]
   });
 });

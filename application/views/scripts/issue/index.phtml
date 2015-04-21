@@ -2,14 +2,26 @@
 $this->title = "Jira page";
 $this->headTitle($this->title);
 ?>
-<div style="margin-left:170px;">
-<table>
-  <tr><h2>all tickets</h2>
-  </tr>
-  <tr>
-    <div id="container" style="width:50%; height:300px;">
-    </div>
-</table>
+<div  style="float:left; width :170px; ">
+  <table>
+    <tr>
+<?php
+echo 'projects'.'<br/>';
+foreach($this->currentitems as $item )
+    echo $item[1].'<br/>';
+                         ?>
+    </tr>
+  </table>
+</div>
+<div style="margin-left:190px;">
+  <table>
+    <tr>  <td>
+        <div id="container"  style="height:300px;"/>          </td>
+    </tr>
+    <tr>  <td>
+        <div id="container2" style="height:300px;"/>          </td>
+    </tr>
+  </table>
 </div>
 <script>
 $(function () {
@@ -18,7 +30,7 @@ $(function () {
             type: 'line'
         },
         title: {
-            text: 'Tickets Number'
+            text: 'Ticket status by creation date'
         },
         xAxis: {
             type: 'category'
@@ -30,6 +42,27 @@ $(function () {
       {name : 'open', data: <?php echo $this->open; ?>},
       {name : 'resolved', data: <?php echo $this->resolved; ?>},
       {name : 'closed', data: <?php echo $this->closed; ?>}
+      ]
+  });
+});
+$(function () {
+    $('#container2').highcharts({
+            chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Ticket priority by creation date'
+        },
+        xAxis: {
+            type: 'category'
+            },
+        yAxis: {
+            min: 0
+            },
+      series: [
+      {name : 'P0', data: <?php echo $this->p0; ?>},
+      {name : 'P1', data: <?php echo $this->p1; ?>},
+      {name : 'P2', data: <?php echo $this->p2; ?>}
       ]
   });
 });
