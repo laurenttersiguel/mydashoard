@@ -1,6 +1,4 @@
 <?php
-define("ZDAPIKEY", "5jr8sV2u");
-define("ZDUSER", "lte");
 define("ZDURL", "http://jira.devbk.net/rest/api/2");
 
 class IssueController extends Zend_Controller_Action
@@ -12,42 +10,17 @@ class IssueController extends Zend_Controller_Action
           	$this->_redirect('/auth/login');
     }
 
-/*
-header("Content-Type: application/json");
-$status = $_GET["status"];
-$jql = "project = MY-PROJECT AND status in ($status) ORDER BY Rank ASC";
-$url = "https://display-user:display-pwd@jira.corp.company.de/jira/rest/api/2/search?jql=".urlencode($jql)."&fields=key,summary,assignee,status";
-echo shell_exec("curl -k --user display-user:display-pwd \"$url\"");
-*/
     public function indexAction()
     {
-/*
-        $auth = Zend_Auth::getInstance();
-        $auth->setStorage(new MyStock());
-        $auth->getStorage()->read();
-        $temp= $auth->getIdentity();
-        var_dump($temp);
-*/
         for ($i = 10; $i >= 0; $i--) {
           $dinf = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i-1,date("Y")));
           $dsup = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i,date("Y")));
           $jqlo = 'project = Bk-Web AND created>='.$dinf.' AND created<'.$dsup.' ';
-//          $jqlr = 'project = Bk-Web AND created>='.$dinf.' AND created<'.$dsup.'  AND status = resolved';
-//          $jqlc = 'project = Bk-Web AND created>='.$dinf.' AND created<'.$dsup.'  AND status = closed';
           $open="/search?jql=".urlencode($jqlo)." ";
-//          $resolved="/search?maxResults=5&jql=".urlencode($jqlr)."&fields=key,summary,assignee,status";
-//          $closed="/search?maxResults=5&jql=".urlencode($jqlc)."&fields=key,summary,assignee,status";
-
           $dataopen=$this->curlWrap($open, null, "GET");
-//          $dataresolved=$this->curlWrap($resolved, null, "GET");
-//          $dataclosed=$this->curlWrap($closed, null, "GET");
-          
-          $opennb=0;
-          $closednb=0;
-          $resolvednb=0;
+          $opennb=0; $closednb=0;  $resolvednb=0;
           if($dataopen->total>0){
               foreach ($dataopen->issues as $issue){
-              //   echo $issue->fields->status->name;
                   if($issue->fields->status->name == 'Open' ) $opennb++;
                   if($issue->fields->status->name == 'Closed' ) $closednb++;
                   if($issue->fields->status->name == 'Resolved' ) $resolvednb++;
@@ -60,13 +33,9 @@ echo shell_exec("curl -k --user display-user:display-pwd \"$url\"");
           $this->view->open=json_encode($tabopen);
           $this->view->resolved=json_encode($tabresolved);
           $this->view->closed=json_encode($tabclosed);
-
-          $p0=0;
-          $p1=0;
-          $p2=0;
+          $p0=0; $p1=0; $p2=0;
           if($dataopen->total>0){
               foreach ($dataopen->issues as $issue){
-              //   echo $issue->fields->status->name;
                   if($issue->fields->priority->name == 'P0' ) $p0++;
                   if($issue->fields->priority->name == 'P1' ) $p1++;
                   if($issue->fields->priority->name == 'P2' ) $p2++;
@@ -78,7 +47,6 @@ echo shell_exec("curl -k --user display-user:display-pwd \"$url\"");
           $this->view->p0=json_encode($tabp0);
           $this->view->p1=json_encode($tabp1);
           $this->view->p2=json_encode($tabp2);
-
        }
 
       $data=$this->curlWrap("/project", null, "GET");
@@ -143,7 +111,14 @@ BKWEB-21811 [fields] [summary]  Drafts_GenerateDraft_Event
   	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
   	curl_setopt($ch, CURLOPT_MAXREDIRS, 10 );
   	curl_setopt($ch, CURLOPT_URL, ZDURL.$url);
-  	curl_setopt($ch, CURLOPT_USERPWD, ZDUSER.":".ZDAPIKEY);
+
+    $auth=Zend_Auth::getInstance();
+    $config = new Zend_Config_Ini('../application/configs/application.ini','production');
+    $options = $config->ldap->server->toArray();
+    $ldapcnct = new Zend_Ldap($options);
+    $current = $ldapcnct->getEntry('uid='.$auth->getIdentity().',ou=people,dc=bluekiwi-software,dc=com');
+
+  	curl_setopt($ch, CURLOPT_USERPWD, $current['uid'][0].":".$current['userpassword'][0]);
   	switch($action){
   		case "POST":
   			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");

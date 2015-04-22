@@ -21,11 +21,6 @@ td, th {
     padding-right: 5px;
 }
 
-.sidebar {
-float: right;
-top:0;
-}
-
 /* style form */
 form dt {
     width: 200px;

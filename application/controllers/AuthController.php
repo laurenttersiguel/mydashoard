@@ -1,4 +1,6 @@
 <?php
+require_once 'MyStock.php';
+
 class authController extends Zend_Controller_Action
 {
     public function init()
@@ -17,12 +19,15 @@ class authController extends Zend_Controller_Action
                     $config = new Zend_Config_Ini('../application/configs/application.ini','production');
                     $options = $config->ldap->toArray();
                     unset($options['log_path']);
+
+                    //Zend_Auth::getInstance()->setStorage(new MyStock());
+                    //$sto=$auth->getStorage();
+                    //$sto->setPassword($password);
                     $adapter = new Zend_Auth_Adapter_Ldap($options,$login,$password);
-                    $auth = Zend_Auth::getInstance();
-                    $result = $auth->authenticate($adapter);
+                    $result = Zend_Auth::getInstance()->authenticate($adapter);
                     if ($result->isValid()) {
                             $this->_redirect('/index');
-                    }else{
+                     }else{
                             $messages = $result->getMessages();
                             print_r($messages[0]);
                     }

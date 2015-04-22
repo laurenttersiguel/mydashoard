@@ -11,24 +11,19 @@ $this->headTitle($this->title);
 <?php
 echo 'Instance Active_Mbr'.'<br/>';
 foreach($this->currentitems as $item )
-    echo $item[0].' '.$item[1].'<br/>';
-             ?>
+    echo $item[0].' , '.$item[1].'<br/>';
+                         ?>
     </tr>
   </table>
 </div>
 <div style="margin-left:170px;">
   <table>
-    <tr>  <td>
-        <div id="containerUp"  style="width:40%; height:300px;">
-        </div>  </td>  <td>
-        <div id="containerUpLeft"  style="width:40%; height:300px;">
-        </div>  </td>
+    <tr>    <td>
+        <div id="containerUp"  style="width:40%; height:300px;"/> </td>        <td>
+        <div id="containerRight"  style="width:40%; height:300px;"/>  </td>
     </tr>
-    <tr>  <td>
-        <div id="containerDown" style="width:40%; height:300px;">
-        </div>  </td>  <td>
-        <div id="containerDownLeft"  style="width:40%; height:300px;">
-        </div>       </td>
+    <tr>    <td>
+        <div id="containerDown" style="width:40%; height:300px;"/> </td>    <td>  </td>
     </tr>
   </table>
 </div>
@@ -62,39 +57,9 @@ $(function () {
         ]
     });
 });
-function chartbis(datachart){
+function chartpost(datachart){
   var datatab=jQuery.parseJSON(datachart);
-$('#containerDownLeft').highcharts({
-    chart: {
-        type: 'line'
-    },
-    title: {
-        text: '<?php echo $this->instance.' like activity'  ?>'
-    },
-    xAxis: {
-    type: 'category'
-    },
-    yAxis: {
-    min:0
-    },
-    series: [{
-            name: 'requests',
-            data: datatab
-        }
-        ]
-});
-}
-$(document).ready(function(){
-    $.post('mongo/jsget',
-           {'message' : '<?php echo $this->instance ?>'},
-            function (data) {
-              chartbis(data);
-          }
-   );
-});
-function chartter(datachart){
-  var datatab=jQuery.parseJSON(datachart);
-$('#containerUpLeft').highcharts({
+$('#containerRight').highcharts({
     chart: {
         type: 'line'
     },
@@ -118,7 +83,37 @@ $(document).ready(function(){
     $.post('mongo/jsgetpost',
     {'message' : '<?php echo $this->instance ?>'},
             function (data) {
-              chartter(data);
+              chartpost(data);
+          }
+   );
+});
+function chartlike(datachart){
+    var datatab=jQuery.parseJSON(datachart);
+    $('#containerDown').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: '<?php echo $this->instance.' like activity'  ?>'
+        },
+        xAxis: {
+        type: 'category'
+        },
+        yAxis: {
+        min:0
+        },
+        series: [{
+                name: 'requests',
+                data: datatab
+            }
+            ]
+    });
+}
+$(document).ready(function(){
+    $.post('mongo/jsget',
+           {'message' : '<?php echo $this->instance ?>'},
+            function (data) {
+              chartlike(data);
           }
    );
 });
