@@ -37,11 +37,9 @@ class IndexController extends Zend_Controller_Action
           echo '<table style="font-size:12px;">';
           echo '<tr>'.'<td>'.'COMMON NAME'.'</td>'.'<td>'.'GIVEN NAME'.'</td>'.'<td>'.'SINGLE NAME'.'</td>'.'<td>'.'MAIL'.'</td>'.'</tr>';
                                
-          foreach ($results as $item) {
-              echo '<tr>'.'<td>'.$item['cn'][0].'</td>'.'<td>'.$item['givenname'][0].'</td>'.'<td>'.$item['sn'][0].'</td>'.'<td>'.$item['mail'][0].'</td>'.'</tr>';
-          }
+          foreach ($results as $item)
+              echo '<tr>'.'<td>'.$item['uid'][0].'</td>'.'<td>'.$item['cn'][0].'</td>'.'<td>'.$item['givenname'][0].'</td>'.'<td>'.$item['sn'][0].'</td>'.'<td>'.$item['mail'][0].'</td>'.'</tr>';
           echo '</table>';
-          var_dump($item);
     }
       public function updateAction(){
 

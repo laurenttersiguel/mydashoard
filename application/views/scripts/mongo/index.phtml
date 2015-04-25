@@ -2,28 +2,30 @@
 $this->title = "customer stats";
 $this->headTitle($this->title);
 ?>
-<div  style="float:left; width :150px; ">
+<div  style="float:left; width :150px;">
   <table>
     <tr>
       <?php echo $this->form.'<br/>'; ?>
     </tr>
-    <tr>
-<?php
-echo 'Instance Active_Mbr'.'<br/>';
-foreach($this->currentitems as $item )
-    echo $item[0].' , '.$item[1].'<br/>';
-                         ?>
-    </tr>
   </table>
 </div>
-<div style="margin-left:170px;">
+<div  style="float:right; width :300px; font-size:12px;">
   <table>
-    <tr>    <td>
-        <div id="containerUp"  style="width:40%; height:300px;"/> </td>        <td>
-        <div id="containerRight"  style="width:40%; height:300px;"/>  </td>
+   <h2> <tr><th>Instance</th><th>Active Mbr</th></h2>
     </tr>
-    <tr>    <td>
-        <div id="containerDown" style="width:40%; height:300px;"/> </td>    <td>  </td>
+<?php foreach($this->currentitems as $item )
+                            echo '<tr><td>'.$item[0].'</td><td>,'.$item[1].'</td></tr>'; ?>
+  </table>
+</div>
+<div style="margin-left:170px;width:600px;">
+  <table>
+    <tr>
+      <div id="containerUp" style="height:300px;"/>
+      <!-- <td>
+                                            <div id="containerRight"  style="width:40%; height:300px;"/>  </td> -->
+    </tr>
+    <tr>
+      <div id="containerDown" style="height:300px;"/>
     </tr>
   </table>
 </div>
