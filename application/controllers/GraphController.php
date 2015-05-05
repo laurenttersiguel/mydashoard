@@ -18,7 +18,7 @@ class GraphController extends Zend_Controller_Action
         $dbobj = new Application_Model_DbTable_Report();
         $evc = $dbobj->getRequestDistinct();
         if (!$evc)  throw new Exception('Invalid table data gateway provided');
-
+        $abscisServer=array();
         foreach($evc as $item) {
             $instanceItem=$item->server_name;
             $abscisServer[]=$instanceItem;
