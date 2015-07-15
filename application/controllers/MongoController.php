@@ -4,8 +4,8 @@ class MongoController extends Zend_Controller_Action
       public function preDispatch()
       {
         $auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) 
-        	$this->_redirect('/auth/login');
+//        if (!$auth->hasIdentity()) 
+  //      	$this->_redirect('/auth/login');
       }
     
       public function indexAction()
