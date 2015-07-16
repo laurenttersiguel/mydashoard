@@ -6,8 +6,8 @@ class IssueController extends Zend_Controller_Action
     public function preDispatch()
 	  {
     		$auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity())
-          	$this->_redirect('/auth/login');
+//        if (!$auth->hasIdentity())
+  //        	$this->_redirect('/auth/login');
     }
 
     public function indexAction()
@@ -56,54 +56,6 @@ class IssueController extends Zend_Controller_Action
 
     }
 
-/* $dataopen->issues*//*
-BKWEB-21811 [fields] [summary]  Drafts_GenerateDraft_Event
-[issuetype]
-      [self]  https://jira.devbk.net/rest/api/2/issuetype/9
-      [id]  9
-      [description]  This Issue Type is used to create Zephyr Test within Jira. [
-      [iconUrl]  https://jira.devbk.net/download/resources/com.thed.zephyr.je/images/icons/ico_zephyr_issuetype.png
-      [name]  Test
-      [subtask]
-[votes]
-[self]  https://jira.devbk.net/rest/api/2/issue/-21811/votes [votes]  0 [hasVoted]
-[fixVersions] [resolution]  [resolutiondate]  
-[reporter]
-      [self]  https://jira.devbk.net/rest/api/2/user?username=tlm [name]  tlm
-      [emailAddress]  tlm@bluekiwi-software.com [avatarUrls]([16x16]  https://jira.devbk.net/secure/useravatar?size=xsmall&ownerId=tlm&avatarId=11260)
-      [displayName]  Thibault Lemoigne [active]  1
-[created]  2015-04-15T17:20:55.000+0100
-[updated]  2015-04-15T17:25:55.000+0100 [customfield_10331]
-[description]  -20957: As a bluekiwi system, I am able to save in a draft all input fields of a Event [priority]
-    [self]  https://jira.devbk.net/rest/api/2/priority/6 [iconUrl]  https://jira.devbk.net/images/icons/priorities/major.png
-    [name]  P2 [id]  6
-[duedate]  []  [] [issuelinks]  [watches]
-     [self]  https://jira.devbk.net/rest/api/2/issue/21811/watchers
-     [watchCount]  2 [isWatching]
-[status]
-    [self]  https://jira.devbk.net/rest/api/2/status/1
-    [description]  The issue is open and ready for the assignee to start work on it.
-    [iconUrl]  https://jira.devbk.net/images/icons/statuses/open.png [name]  Open [id]  1
-[labels]  ( [0]  DraftsV2 ) [workratio]  -1 [assignee]  stdClass
-       [self]  https://jira.devbk.net/rest/api/2/user?username=tlm [name]  tlm [emailAddress]  tlm@bluekiwi-software.com [avatarUrls]
-       [16x16]  https://jira.devbk.net/secure/useravatar?size=xsmall&ownerId=tlm&avatarId=11260
-       [displayName]  Thibault Lemoigne
-       [active]  1
-[project]
-       [self]  https://jira.devbk.net/rest/api/2/project/10460 [id]  10460 [key]
-       [name]  Bk-Web
-       [avatarUrls]
-       [16x16]  https://jira.devbk.net/secure/projectavatar?size=xsmall&pid=10460&avatarId=10011)
-[versions]  [environment]  [lastViewed] Not Started
-[components]
-    [self]  https://jira.devbk.net/rest/api/2/component/10810 [id]  10810
-    [name]  Drafts
-    [description]  Everything related to drafts - drafts view in profile page and autosaved feature on created content
-    [expand]  editmeta,renderedFields,transitions,changelog,operations
-    [id]  51998
-    [self]  https://jira.devbk.net/rest/api/2/issue/51998 [key]
-*/
-
 
   public function curlWrap($url, $json, $action)
   {
@@ -116,7 +68,7 @@ BKWEB-21811 [fields] [summary]  Drafts_GenerateDraft_Event
     $config = new Zend_Config_Ini('../application/configs/application.ini','production');
     $options = $config->ldap->server->toArray();
     $ldapcnct = new Zend_Ldap($options);
-    $current = $ldapcnct->getEntry('uid='.$auth->getIdentity().',ou=people,dc=bluekiwi-software,dc=com');
+    $current = $ldapcnct->getEntry('uid='.$auth->getIdentity().',ou=people,dc=mydomain,dc=com');
 
   	curl_setopt($ch, CURLOPT_USERPWD, $current['uid'][0].":".$current['userpassword'][0]);
   	switch($action){
