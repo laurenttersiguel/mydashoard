@@ -16,10 +16,25 @@ class SupportController extends Zend_Controller_Action
     public function indexAction()
     {
 
+       $form = new Application_Form_Auth();
+       $form->send->setLabel('Authenticate');
+       $this->view->form = $form;
+
+        if ($this->getRequest()->isPost()) {
+              $formData = $this->getRequest()->getPost();
+              if ($form->isValid($formData)) {
+                    $login = $form->getValue('login');
+                    $password = $form->getValue('password');
+echo $login;
+echo $password;
+                   }
+
+
+
         for ($i = 10; $i >= 0; $i--) {
               $dinf = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i-1,date("Y")));
               $dsup = date("Y-m-d",mktime(0, 0, 0, date("m"),date("d")-$i,date("Y")));
-              $list=$this->curlWrap('/search.json?query=type:ticket,created>='.$dinf.',created<'.$dsup, null, "GET");
+              $list=$this->curlWrap('/search.json?query=type:ticket,created>='.$dinf.',created<'.$dsup, null, "GET",$login,$password);
               $k=0;$l=0;$m=0;$n=0;$o=0;$p=0;
               if ($list->count>0){
                 foreach ($list->results as $key => $item){
@@ -45,14 +60,14 @@ class SupportController extends Zend_Controller_Action
         $this->view->high=json_encode($mytabo);
         $this->view->normal=json_encode($mytabs);
 }
-
-  public function curlWrap($url, $json, $action)
+}
+  public function curlWrap($url, $json, $action,$login,$password)
   {
   	$ch = curl_init();
   	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
   	curl_setopt($ch, CURLOPT_MAXREDIRS, 10 );
   	curl_setopt($ch, CURLOPT_URL, ZDURL.$url);
-  	curl_setopt($ch, CURLOPT_USERPWD, ZDUSER."/token:".ZDAPIKEY);
+  	curl_setopt($ch, CURLOPT_USERPWD, $login."/token:".$password);
   	switch($action){
   		case "POST":
   			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
