@@ -2,10 +2,13 @@
 $this->title = "Zendesk page";
 $this->headTitle($this->title);
 ?>
-<table>
+<div  style="float:left; width :170px; ">
     <tr>
       <?php echo $this->form.'<br/>'; ?>
     </tr>
+</div>
+<div style="margin-left:190px;">
+<table>
   <tr>
     <div id="container" style="width:50%; height:300px;"/>
   </tr>
@@ -13,6 +16,7 @@ $this->headTitle($this->title);
       <div id="container2" style="width:50%; height:300px;"/>
   </tr>
 </table>
+</div>
 <script>
 $(function () {
     $('#container').highcharts({

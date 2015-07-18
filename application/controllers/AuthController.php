@@ -21,13 +21,13 @@ class authController extends Zend_Controller_Action
                     $options = $config->ldap->toArray();
                     unset($options['log_path']);
                     $adapter = new Zend_Auth_Adapter_Ldap($options,$login,$password);
-                  //  $result = Zend_Auth::getInstance()->authenticate($adapter);
-                  //  if ($result->isValid()) {
+                    $result = Zend_Auth::getInstance()->authenticate($adapter);
+                    if ($result->isValid()) {
                             $this->_redirect('/index');
-                    // }else{
-                      //      $messages = $result->getMessages();
-                        //    print_r($messages[0]);
-                   // }
+                     }else{
+                          $messages = $result->getMessages();
+                          print_r($messages[0]);
+                   }
               }
               else {
                       $form->populate($formData);
