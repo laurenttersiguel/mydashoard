@@ -2,29 +2,28 @@
 $this->title = "internal dashboard prototype";
 $this->headTitle($this->title);
 ?>
-<p>
-<a href="<?php echo $this->url(array('controller'=>'graph','action'=>'index'));?>">Customers Activity</a>
+<div style="margin-left:190px;">
+
+<br>
+<br>
+<form  action="<?php echo $this->url(array('controller'=>'issue','action'=>'index'));?>">
+    <input id="choice" type="submit" value="Jira Issues">
+</form>
+
 <br>
 <br>
 <br>
-<a href="<?php echo $this->url(array('controller'=>'mongo','action'=>'index'));?>">Mongo Stats</a>
+<form  action="<?php echo $this->url(array('controller'=>'support','action'=>'index'));?>">
+    <input id="choice" type="submit" value="Zendesk Issues">
+</form>
 <br>
 <br>
 <br>
-<a href="<?php echo $this->url(array('controller'=>'list','action'=>'index'));?>">My Directory</a>
+
+<form action="<?php echo $this->url(array('controller'=>'instance','action'=>'index'));?>">
+    <input id="choice" type="submit" value="Instance Activity">
+</form>
 <br>
 <br>
 <br>
-<a href="<?php echo $this->url(array('controller'=>'issue','action'=>'index'));?>">Jira Issues</a>
-<br>
-<br>
-<br>
-<a href="<?php echo $this->url(array('controller'=>'support','action'=>'index'));?>">Zendesk Support</a>
-<br>
-<br>
-<br>
-<div style="font-size:12px;"><?php echo 'user connected from LDAP : '.$this->user_connected ?></div>
-<br>
-<a href="<?php echo $this->url(array('controller'=>'index','action'=>'clear'));?>">logout</a>
-<br>
-</p>
+</div>

@@ -10,8 +10,10 @@ $this->headTitle($this->title);
     <tr>
 <?php
 echo 'projects'.'<br/>';
+if ($this->currentitems){
 foreach($this->currentitems as $item )
     echo $item[1].'<br/>';
+}
                          ?>
     </tr>
   </table>

@@ -1,15 +1,16 @@
 body,html {
     margin: 0 5px;
     font-family: Verdana,sans-serif;
+background:  	 	#008080; 
 }
 
 h1 {
     font-size: 1.4em;
-    color: #008000;
+    color:  	#D3D3D3;
 }
 
 a {
-    color: #008000;
+    color:  #D3D3D3;
 }
 
 /* Table */
@@ -37,4 +38,10 @@ form dd {
 form #submitbutton {
     margin-left: 100px;
 }
+
+#choice {
+width: 30em;  height: 10em;
+}
+
+~
 
